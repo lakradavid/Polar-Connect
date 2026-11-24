@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="pc-auth-bg">
+  <div class="pc-auth-card">
+
+    <!-- Brand -->
+    <div class="text-center mb-4">
+      <div class="pc-brand-logo mx-auto mb-3" style="width:56px;height:56px;font-size:1.6rem">
+        <i class="fas fa-snowflake"></i>
+      </div>
+      <h2 style="color:var(--deep-navy);font-size:1.6rem;font-weight:800;margin-bottom:0.3rem">Welcome Back</h2>
+      <p style="color:var(--text-muted);font-size:0.875rem">Sign in to your PolarConnect account</p>
+    </div>
+
+    <!-- Django messages (error banner) -->
+    {% if messages %}
+      {% for msg in messages %}
+        <div class="{% if msg.tags == 'success' %}alert-polar-success{% else %}alert-polar-error{% endif %} mb-3 alert-auto-dismiss">
+          <i class="fas {% if msg.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+          {{ msg }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" autocomplete="on">
+      {% csrf_token %}
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="pc-form-label" for="id_email">Email Address</label>
+        <input
+          type="email"
+          name="username"
+          id="id_email"
+          class="pc-form-control{% if form.username.errors %} border-danger{% endif %}"
+          placeholder="your@email.com"
+          value="{{ form.username.value|default:'' }}"
+          autocomplete="email"
+          required
+          autofocus
+        >
+        {% if form.username.errors %}
+          <div style="color:var(--danger);font-size:0.8rem;margin-top:0.3rem">
+            <i class="fas fa-exclamation-circle me-1"></i>{{ form.username.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="pc-form-label" for="loginPassword">Password</label>
+        <div class="position-relative">
+          <input
+            type="password"
+            name="password"
+            id="loginPassword"
+            class="pc-form-control{% if form.password.errors %} border-danger{% endif %}"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+            style="padding-right:3rem"
+          >
+          <button
+            type="button"
+            class="position-absolute top-50 end-0 translate-middle-y me-3 border-0 bg-transparent text-muted"
+            data-toggle-password="loginPassword"
+            tabindex="-1"
+          >
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        {% if form.password.errors %}
+          <div style="color:var(--danger);font-size:0.8rem;margin-top:0.3rem">
+            <i class="fas fa-exclamation-circle me-1"></i>{{ form.password.errors.0 }}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Remember me + Forgot -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="remember_me" id="rememberMe">
+          <label class="form-check-label" for="rememberMe" style="font-size:0.875rem;color:var(--text-muted)">
+            Remember me
+          </label>
+        </div>
+        <a href="#" style="font-size:0.875rem;color:var(--arctic-blue)">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn-polar-primary w-100 justify-content-center"
+              style="border-radius:var(--radius-sm);font-size:1rem;padding:0.8rem">
+        <i class="fas fa-sign-in-alt me-2"></i> Sign In
+      </button>
+    </form>
+
+    <hr style="border-color:var(--border-color);margin:1.5rem 0">
+
+    <p class="text-center" style="font-size:0.875rem;color:var(--text-muted);margin:0">
+      Don't have an account?
+      <a href="{% url 'accounts:register' %}" style="color:var(--arctic-blue);font-weight:600">Create one free</a>
+    </p>
+    <div class="text-center mt-3">
+      <a href="{% url 'home' %}" style="font-size:0.8rem;color:var(--text-muted)">
+        <i class="fas fa-arrow-left me-1"></i> Back to Homepage
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

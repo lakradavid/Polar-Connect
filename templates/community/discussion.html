@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}{{ discussion.title }}{% endblock %}
+{% block content %}
+<section class="pc-page-header"><div class="container">
+  <div class="d-flex gap-2 mb-2">
+    {% if discussion.is_question %}<span class="badge-polar badge-new">Question</span>{% endif %}
+    <span class="badge-polar badge-category">{{ discussion.forum.name }}</span>
+  </div>
+  <h1>{{ discussion.title }}</h1>
+  <div style="color:rgba(255,255,255,0.65);font-size:0.85rem;margin-top:0.5rem">
+    <span><i class="fas fa-user me-1"></i>{{ discussion.author.get_display_name }}</span> &bull;
+    <span><i class="fas fa-clock me-1"></i>{{ discussion.created_at|timesince }} ago</span> &bull;
+    <span><i class="fas fa-eye me-1"></i>{{ discussion.view_count }} views</span>
+  </div>
+</div></section>
+<section class="section-padding bg-light-grey"><div class="container" style="max-width:860px">
+  <!-- Original post -->
+  <div class="pc-card p-4 mb-4">
+    <div style="line-height:1.9;color:var(--dark-grey)">{{ discussion.content|linebreaks }}</div>
+  </div>
+  <!-- Replies -->
+  <h5 style="color:var(--deep-navy);margin-bottom:1rem"><i class="fas fa-comments me-2 text-arctic"></i>{{ comments.count }} Repl{{ comments.count|pluralize:"y,ies" }}</h5>
+  {% for comment in comments %}
+  <div class="pc-card p-4 mb-3 {% if comment.is_answer %}border-success{% endif %}" {% if comment.is_answer %}style="border:2px solid var(--success)"{% endif %}>
+    <div class="d-flex gap-3">
+      <div class="pc-scientist-avatar-placeholder" style="width:44px;height:44px;font-size:1rem;flex-shrink:0">{{ comment.author.get_display_name|first|upper }}</div>
+      <div class="flex-grow-1">
+        {% if comment.is_answer %}<div class="badge-polar badge-approved mb-2"><i class="fas fa-check me-1"></i>Accepted Answer</div>{% endif %}
+        <div style="font-weight:600;color:var(--deep-navy);font-size:0.9rem">{{ comment.author.get_display_name }}
+          <span style="font-weight:400;font-size:0.78rem;color:var(--text-muted);margin-left:0.5rem">{{ comment.created_at|timesince }} ago</span>
+        </div>
+        <div style="line-height:1.8;color:var(--dark-grey);margin-top:0.5rem">{{ comment.content|linebreaks }}</div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="text-center py-3" style="color:var(--text-muted)"><i class="fas fa-comment-slash me-1"></i>No replies yet. Be the first to respond!</div>
+  {% endfor %}
+  <!-- Reply form -->
+  <div class="pc-card p-4 mt-4">
+    <h6 style="color:var(--deep-navy);margin-bottom:1rem">Post a Reply</h6>
+    {% if user.is_authenticated %}
+    <form method="post">{% csrf_token %}
+      <textarea name="content" class="pc-form-control" rows="5" placeholder="Share your thoughts or answer this question…" required></textarea>
+      <button type="submit" class="btn-polar-primary mt-3"><i class="fas fa-paper-plane me-1"></i>Post Reply</button>
+    </form>
+    {% else %}
+    <div class="alert-polar-info"><i class="fas fa-info-circle"></i> <a href="{% url 'accounts:login' %}">Log in</a> to post a reply.</div>
+    {% endif %}
+  </div>
+  <div class="mt-3"><a href="{% url 'community:forum' %}" class="btn-polar-outline"><i class="fas fa-arrow-left me-1"></i>Back to Forum</a></div>
+</div></section>
+{% endblock %}

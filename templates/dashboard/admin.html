@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-cog me-2"></i>Admin Dashboard</h1>
+    <p style="color:rgba(255,255,255,0.75)">Platform management and analytics overview</p>
+  </div>
+</section>
+
+<section class="section-padding bg-light-grey">
+  <div class="container">
+
+    <!-- Stat cards -->
+    <div class="row g-3 mb-5">
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pc-stat-card">
+          <div class="pc-stat-icon blue"><i class="fas fa-users"></i></div>
+          <div><div class="pc-stat-num">{{ total_users }}</div><div class="pc-stat-label">Total Users</div></div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pc-stat-card">
+          <div class="pc-stat-icon cyan"><i class="fas fa-flask"></i></div>
+          <div><div class="pc-stat-num">{{ total_research }}</div><div class="pc-stat-label">Research Papers</div></div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pc-stat-card">
+          <div class="pc-stat-icon orange"><i class="fas fa-clock"></i></div>
+          <div><div class="pc-stat-num">{{ pending_research }}</div><div class="pc-stat-label">Pending Review</div></div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pc-stat-card">
+          <div class="pc-stat-icon green"><i class="fas fa-database"></i></div>
+          <div><div class="pc-stat-num">{{ total_resources }}</div><div class="pc-stat-label">Resources</div></div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pc-stat-card">
+          <div class="pc-stat-icon navy"><i class="fas fa-images"></i></div>
+          <div><div class="pc-stat-num">{{ total_media }}</div><div class="pc-stat-label">Media Files</div></div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="pc-stat-card">
+          <div class="pc-stat-icon red"><i class="fas fa-newspaper"></i></div>
+          <div><div class="pc-stat-num">{{ total_articles }}</div><div class="pc-stat-label">Articles</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-4 mb-5">
+      <div class="col-lg-6">
+        <div class="pc-card p-4">
+          <h5 style="color:var(--deep-navy);margin-bottom:1.5rem"><i class="fas fa-users me-2 text-arctic"></i>Users by Category</h5>
+          <canvas id="userChart" height="260"></canvas>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="pc-card p-4">
+          <h5 style="color:var(--deep-navy);margin-bottom:1.5rem"><i class="fas fa-flask me-2 text-arctic"></i>Research by Category</h5>
+          <canvas id="researchChart" height="260"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin quick links -->
+    <div class="row g-3 mb-5">
+      {% with links=admin_links %}
+      <div class="col-12"><h5 style="color:var(--deep-navy)"><i class="fas fa-bolt me-2 text-arctic"></i>Quick Management</h5></div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="/admin/research/researchpublication/" class="pc-feature-card text-decoration-none d-block">
+          <div class="pc-feature-icon"><i class="fas fa-flask"></i></div>
+          <h4>Research Papers</h4>
+          <p>Approve, edit or delete submissions</p>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="/admin/repository/knowledgeresource/" class="pc-feature-card text-decoration-none d-block">
+          <div class="pc-feature-icon"><i class="fas fa-database"></i></div>
+          <h4>Repository</h4>
+          <p>Manage knowledge resources</p>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="/admin/news/newsarticle/" class="pc-feature-card text-decoration-none d-block">
+          <div class="pc-feature-icon"><i class="fas fa-newspaper"></i></div>
+          <h4>News Articles</h4>
+          <p>Publish or draft news content</p>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="/admin/education/learningmodule/" class="pc-feature-card text-decoration-none d-block">
+          <div class="pc-feature-icon"><i class="fas fa-graduation-cap"></i></div>
+          <h4>Learning Modules</h4>
+          <p>Manage education content</p>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="/admin/expeditions/expedition/" class="pc-feature-card text-decoration-none d-block">
+          <div class="pc-feature-icon"><i class="fas fa-ship"></i></div>
+          <h4>Expeditions</h4>
+          <p>Add or edit expedition records</p>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="/admin/media_gallery/mediaasset/" class="pc-feature-card text-decoration-none d-block">
+          <div class="pc-feature-icon"><i class="fas fa-images"></i></div>
+          <h4>Media Gallery</h4>
+          <p>Upload and organise media</p>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="/admin/community/discussion/" class="pc-feature-card text-decoration-none d-block">
+          <div class="pc-feature-icon"><i class="fas fa-comments"></i></div>
+          <h4>Community</h4>
+          <p>Moderate discussions and replies</p>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="/admin/accounts/customuser/" class="pc-feature-card text-decoration-none d-block">
+          <div class="pc-feature-icon"><i class="fas fa-users-cog"></i></div>
+          <h4>User Management</h4>
+          <p>Manage roles and permissions</p>
+        </a>
+      </div>
+      {% endwith %}
+    </div>
+
+    <!-- Pending papers -->
+    {% if pending_papers %}
+    <div class="pc-card p-4 mb-4">
+      <h5 style="color:var(--deep-navy);margin-bottom:1rem"><i class="fas fa-clock me-2" style="color:var(--warning)"></i>Pending Research Review ({{ pending_papers|length }})</h5>
+      <div class="table-responsive">
+        <table class="table" style="font-size:0.875rem">
+          <thead style="background:var(--light-grey)">
+            <tr><th>Title</th><th>Author</th><th>Category</th><th>Submitted</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            {% for paper in pending_papers %}
+            <tr>
+              <td><a href="{% url 'research:detail' paper.pk %}">{{ paper.title|truncatechars:50 }}</a></td>
+              <td>{{ paper.authors|truncatechars:30 }}</td>
+              <td>{{ paper.get_category_display }}</td>
+              <td>{{ paper.created_at|date:"M d, Y" }}</td>
+              <td>
+                <a href="/admin/research/researchpublication/{{ paper.pk }}/change/" class="btn-polar-primary" style="font-size:0.75rem;padding:0.25rem 0.75rem">Review</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Recent users -->
+    <div class="pc-card p-4">
+      <h5 style="color:var(--deep-navy);margin-bottom:1rem"><i class="fas fa-users me-2 text-arctic"></i>Recent Registrations</h5>
+      <div class="table-responsive">
+        <table class="table" style="font-size:0.875rem">
+          <thead style="background:var(--light-grey)">
+            <tr><th>Name</th><th>Email</th><th>Category</th><th>Role</th><th>Joined</th></tr>
+          </thead>
+          <tbody>
+            {% for u in recent_users %}
+            <tr>
+              <td>{{ u.get_display_name }}</td>
+              <td>{{ u.email }}</td>
+              <td><span class="badge-polar badge-category">{{ u.get_user_category_display }}</span></td>
+              <td>{{ u.get_role_display }}</td>
+              <td>{{ u.date_joined|date:"M d, Y" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  const userCtx = document.getElementById('userChart');
+  if(userCtx){
+    new Chart(userCtx, {
+      type: 'doughnut',
+      data: {
+        labels: {{ chart_user_labels|safe }},
+        datasets: [{
+          data: {{ chart_user_counts|safe }},
+          backgroundColor: ['#1769AA','#28C7E8','#27AE60','#F39C12','#071B33'],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+    });
+  }
+  const resCtx = document.getElementById('researchChart');
+  if(resCtx){
+    new Chart(resCtx, {
+      type: 'bar',
+      data: {
+        labels: {{ chart_res_labels|safe }},
+        datasets: [{
+          label: 'Papers',
+          data: {{ chart_res_counts|safe }},
+          backgroundColor: 'rgba(23,105,170,0.75)',
+          borderRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } }, x: { ticks: { font: { size: 10 } } } }
+      }
+    });
+  }
+})();
+</script>
+{% endblock %}

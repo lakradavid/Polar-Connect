@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Create Article{% endblock %}
+{% block content %}
+<section class="pc-page-header"><div class="container"><h1><i class="fas fa-edit me-2"></i>Create News Article</h1></div></section>
+<section class="section-padding bg-light-grey"><div class="container" style="max-width:760px">
+<div class="pc-card p-4">
+  {% if messages %}{% for msg in messages %}<div class="alert-polar-error mb-3"><i class="fas fa-exclamation-circle"></i> {{ msg }}</div>{% endfor %}{% endif %}
+  <form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="row g-3">
+      <div class="col-12"><label class="pc-form-label">Title *</label><input type="text" name="title" class="pc-form-control" required></div>
+      <div class="col-md-6">
+        <label class="pc-form-label">Category</label>
+        <select name="category" class="pc-form-control"><option value="">None</option>{% for cat in categories %}<option value="{{ cat.pk }}">{{ cat.name }}</option>{% endfor %}</select>
+      </div>
+      <div class="col-md-6">
+        <label class="pc-form-label">Status</label>
+        <select name="status" class="pc-form-control"><option value="draft">Draft</option><option value="published">Publish Now</option></select>
+      </div>
+      <div class="col-12"><label class="pc-form-label">Summary *</label><textarea name="summary" class="pc-form-control" rows="3" required maxlength="500"></textarea></div>
+      <div class="col-12"><label class="pc-form-label">Content *</label><textarea name="content" class="pc-form-control" rows="10" required></textarea></div>
+      <div class="col-12"><label class="pc-form-label">Featured Image</label><input type="file" name="featured_image" class="pc-form-control" accept="image/*"></div>
+      <div class="col-12 d-flex gap-2 mt-2">
+        <button type="submit" class="btn-polar-primary"><i class="fas fa-save me-1"></i>Save Article</button>
+        <a href="{% url 'news:list' %}" class="btn-polar-outline">Cancel</a>
+      </div>
+    </div>
+  </form>
+</div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}Knowledge Repository{% endblock %}
+{% block content %}
+
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-database me-2"></i>Knowledge Repository</h1>
+    <p style="color:rgba(255,255,255,0.75)">Scientific documents, reports, educational materials and research resources</p>
+  </div>
+</section>
+
+<section class="section-padding bg-light-grey">
+  <div class="container">
+
+    <!-- Filter bar -->
+    <div class="pc-filter-bar mb-4">
+      <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-4">
+          <div class="pc-search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" name="q" class="form-control" value="{{ q }}"
+                   placeholder="Search by title, author, keyword…">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <select name="category" class="pc-filter-select w-100">
+            <option value="">All Categories</option>
+            {% for val, label in categories %}
+            <option value="{{ val }}" {% if category == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select name="type" class="pc-filter-select w-100">
+            <option value="">All Types</option>
+            {% for val, label in types %}
+            <option value="{{ val }}" {% if rtype == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <input type="number" name="year" class="pc-filter-select w-100" value="{{ year }}"
+                 placeholder="Year" min="1980" max="2030">
+        </div>
+        <div class="col-md-2 d-flex gap-1">
+          <button type="submit" class="btn-polar-primary flex-grow-1" style="font-size:0.8rem">
+            <i class="fas fa-search"></i> Filter
+          </button>
+          {% if q or category or rtype or year %}<a href="{% url 'repository:list' %}" class="btn-polar-dark" style="padding:0.5rem 0.6rem"><i class="fas fa-times"></i></a>{% endif %}
+          {% if user.is_authenticated %}<a href="{% url 'repository:upload' %}" class="btn-polar-cyan" style="padding:0.5rem 0.6rem" title="Upload"><i class="fas fa-upload"></i></a>{% endif %}
+        </div>
+      </form>
+    </div>
+
+    <p class="text-muted mb-4" style="font-size:0.875rem">
+      <strong>{{ resources|length }}</strong> resource{{ resources|length|pluralize }} found
+    </p>
+
+    <!-- Resource type icon map -->
+    <div class="row g-3">
+      {% for resource in resources %}
+      <div class="col-lg-6">
+        <div class="pc-card p-0" style="overflow:hidden;transition:all 0.3s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          <div class="d-flex">
+            <!-- Left icon bar -->
+            <div style="width:72px;min-width:72px;background:linear-gradient(135deg,var(--arctic-blue),var(--cyan));display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.4rem;padding:1rem 0">
+              <i class="fas fa-{% if resource.resource_type == 'pdf' %}file-pdf{% elif resource.resource_type == 'report' %}file-alt{% elif resource.resource_type == 'educational' %}graduation-cap{% elif resource.resource_type == 'data' %}database{% else %}file{% endif %}" style="font-size:1.5rem;color:white"></i>
+              <span style="font-size:0.6rem;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:0.5px;text-align:center;line-height:1.2">{{ resource.get_resource_type_display }}</span>
+            </div>
+            <!-- Content -->
+            <div class="p-3 flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start mb-1 gap-2">
+                <div class="d-flex gap-1 flex-wrap">
+                  <span class="pc-card-category" style="font-size:0.65rem">{{ resource.get_category_display }}</span>
+                  {% if resource.is_featured %}<span class="badge-polar badge-featured" style="font-size:0.65rem"><i class="fas fa-star"></i></span>{% endif %}
+                </div>
+                {% if resource.publication_date %}
+                <span style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap">{{ resource.publication_date|date:"Y" }}</span>
+                {% endif %}
+              </div>
+              <h6 style="color:var(--deep-navy);font-size:0.9rem;margin-bottom:0.3rem;line-height:1.4">
+                <a href="{% url 'repository:detail' resource.pk %}" style="color:var(--deep-navy)">{{ resource.title }}</a>
+              </h6>
+              <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;line-height:1.5">
+                {{ resource.abstract|truncatewords:20 }}
+              </p>
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-1">
+                <div class="pc-card-meta" style="font-size:0.75rem">
+                  <span><i class="fas fa-user" style="color:var(--arctic-blue)"></i> {{ resource.author|truncatechars:30 }}</span>
+                  {% if resource.institution %}<span><i class="fas fa-building" style="color:var(--arctic-blue)"></i> {{ resource.institution|truncatechars:30 }}</span>{% endif %}
+                </div>
+                <div class="d-flex gap-1">
+                  <a href="{% url 'repository:detail' resource.pk %}" class="btn-polar-outline" style="font-size:0.72rem;padding:0.25rem 0.65rem">
+                    View
+                  </a>
+                  {% if resource.uploaded_file or resource.external_url %}
+                  <a href="{% if resource.uploaded_file %}{{ resource.uploaded_file.url }}{% else %}{{ resource.external_url }}{% endif %}"
+                     class="btn-polar-primary" style="font-size:0.72rem;padding:0.25rem 0.65rem"
+                     {% if resource.uploaded_file %}download{% else %}target="_blank" rel="noopener"{% endif %}>
+                    <i class="fas fa-{% if resource.uploaded_file %}download{% else %}external-link-alt{% endif %}"></i>
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="pc-empty-state">
+          <i class="fas fa-database"></i>
+          <h4>No resources found</h4>
+          <p>Try different search terms or clear the filters.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

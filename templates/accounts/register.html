@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Create Account{% endblock %}
+
+{% block content %}
+<div class="pc-auth-bg" style="padding:3rem 1rem">
+  <div class="pc-auth-card" style="max-width:640px">
+
+    <!-- Brand -->
+    <div class="text-center mb-4">
+      <div class="pc-brand-logo mx-auto mb-3" style="width:56px;height:56px;font-size:1.6rem">
+        <i class="fas fa-snowflake"></i>
+      </div>
+      <h2 style="color:var(--deep-navy);font-size:1.6rem;font-weight:800;margin-bottom:0.3rem">Join PolarConnect</h2>
+      <p style="color:var(--text-muted);font-size:0.875rem">Create your free account and explore polar science</p>
+    </div>
+
+    <!-- Error / success banner -->
+    {% if messages %}
+      {% for msg in messages %}
+        <div class="{% if msg.tags == 'success' %}alert-polar-success{% else %}alert-polar-error{% endif %} mb-3 alert-auto-dismiss">
+          <i class="fas {% if msg.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+          {{ msg }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Password requirements hint -->
+    <div class="alert-polar-info mb-4" style="font-size:0.8rem">
+      <i class="fas fa-info-circle me-1"></i>
+      Password must be at least 8 characters and not too similar to your username or email.
+    </div>
+
+    <form method="post" autocomplete="off" novalidate>
+      {% csrf_token %}
+
+      <div class="row g-3">
+
+        <!-- Full name -->
+        <div class="col-md-6">
+          <label class="pc-form-label">Full Name <span style="color:var(--danger)">*</span></label>
+          <input type="text" name="full_name" class="pc-form-control{% if form.full_name.errors %} border-danger{% endif %}"
+                 placeholder="Dr. Priya Sharma" value="{{ form.full_name.value|default:'' }}" required>
+          {% if form.full_name.errors %}
+            <div style="color:var(--danger);font-size:0.78rem;margin-top:0.25rem">
+              <i class="fas fa-exclamation-circle me-1"></i>{{ form.full_name.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Username -->
+        <div class="col-md-6">
+          <label class="pc-form-label">Username <span style="color:var(--danger)">*</span></label>
+          <input type="text" name="username" class="pc-form-control{% if form.username.errors %} border-danger{% endif %}"
+                 placeholder="priya_sharma" value="{{ form.username.value|default:'' }}" required>
+          {% if form.username.errors %}
+            <div style="color:var(--danger);font-size:0.78rem;margin-top:0.25rem">
+              <i class="fas fa-exclamation-circle me-1"></i>{{ form.username.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Email -->
+        <div class="col-12">
+          <label class="pc-form-label">Email Address <span style="color:var(--danger)">*</span></label>
+          <input type="email" name="email" class="pc-form-control{% if form.email.errors %} border-danger{% endif %}"
+                 placeholder="priya@example.com" value="{{ form.email.value|default:'' }}" required>
+          {% if form.email.errors %}
+            <div style="color:var(--danger);font-size:0.78rem;margin-top:0.25rem">
+              <i class="fas fa-exclamation-circle me-1"></i>{{ form.email.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-6">
+          <label class="pc-form-label">Phone Number</label>
+          <input type="tel" name="phone_number" class="pc-form-control"
+                 placeholder="+91 98765 43210" value="{{ form.phone_number.value|default:'' }}">
+        </div>
+
+        <!-- User category -->
+        <div class="col-md-6">
+          <label class="pc-form-label">User Category <span style="color:var(--danger)">*</span></label>
+          <select name="user_category" class="pc-form-control" required>
+            <option value="">Select category…</option>
+            <option value="student"                {% if form.user_category.value == 'student' %}selected{% endif %}>Student</option>
+            <option value="researcher"             {% if form.user_category.value == 'researcher' %}selected{% endif %}>Researcher</option>
+            <option value="educator"               {% if form.user_category.value == 'educator' %}selected{% endif %}>Educator</option>
+            <option value="scientific_professional"{% if form.user_category.value == 'scientific_professional' %}selected{% endif %}>Scientific Professional</option>
+            <option value="general_public"         {% if form.user_category.value == 'general_public' %}selected{% endif %}>General Public</option>
+          </select>
+        </div>
+
+        <!-- Institution -->
+        <div class="col-md-6">
+          <label class="pc-form-label">Institution / Organisation</label>
+          <input type="text" name="institution" class="pc-form-control"
+                 placeholder="IIT Delhi / NCPOR" value="{{ form.institution.value|default:'' }}">
+        </div>
+
+        <!-- Designation -->
+        <div class="col-md-6">
+          <label class="pc-form-label">Designation / Role</label>
+          <input type="text" name="designation" class="pc-form-control"
+                 placeholder="Research Scientist" value="{{ form.designation.value|default:'' }}">
+        </div>
+
+        <!-- Password 1 -->
+        <div class="col-md-6">
+          <label class="pc-form-label">Password <span style="color:var(--danger)">*</span></label>
+          <div class="position-relative">
+            <input type="password" name="password1" id="regPassword1"
+                   class="pc-form-control{% if form.password1.errors %} border-danger{% endif %}"
+                   placeholder="Min. 8 characters" required style="padding-right:3rem">
+            <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 border-0 bg-transparent text-muted"
+                    data-toggle-password="regPassword1" tabindex="-1">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          {% if form.password1.errors %}
+            <div style="color:var(--danger);font-size:0.78rem;margin-top:0.25rem">
+              <i class="fas fa-exclamation-circle me-1"></i>{{ form.password1.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Password 2 -->
+        <div class="col-md-6">
+          <label class="pc-form-label">Confirm Password <span style="color:var(--danger)">*</span></label>
+          <div class="position-relative">
+            <input type="password" name="password2" id="regPassword2"
+                   class="pc-form-control{% if form.password2.errors %} border-danger{% endif %}"
+                   placeholder="Repeat your password" required style="padding-right:3rem">
+            <button type="button" class="position-absolute top-50 end-0 translate-middle-y me-3 border-0 bg-transparent text-muted"
+                    data-toggle-password="regPassword2" tabindex="-1">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          {% if form.password2.errors %}
+            <div style="color:var(--danger);font-size:0.78rem;margin-top:0.25rem">
+              <i class="fas fa-exclamation-circle me-1"></i>{{ form.password2.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+
+      </div><!-- /row -->
+
+      <!-- Terms -->
+      <div class="form-check mt-3 mb-4">
+        <input class="form-check-input" type="checkbox" id="termsCheck" required>
+        <label class="form-check-label" for="termsCheck" style="font-size:0.85rem;color:var(--text-muted)">
+          I agree to the <a href="#" style="color:var(--arctic-blue)">Terms of Service</a>
+          and <a href="#" style="color:var(--arctic-blue)">Privacy Policy</a>
+        </label>
+      </div>
+
+      <button type="submit" class="btn-polar-primary w-100 justify-content-center"
+              style="border-radius:var(--radius-sm);font-size:1rem;padding:0.8rem">
+        <i class="fas fa-user-plus me-2"></i> Create Account
+      </button>
+    </form>
+
+    <hr style="border-color:var(--border-color);margin:1.5rem 0">
+    <p class="text-center" style="font-size:0.875rem;color:var(--text-muted);margin:0">
+      Already have an account?
+      <a href="{% url 'accounts:login' %}" style="color:var(--arctic-blue);font-weight:600">Sign in</a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Events & Webinars{% endblock %}
+{% block content %}
+
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-calendar-alt me-2"></i>Events, Webinars & Workshops</h1>
+    <p style="color:rgba(255,255,255,0.75)">Upcoming and past polar science events, competitions and educational programmes</p>
+  </div>
+</section>
+
+<section class="section-padding bg-light-grey">
+  <div class="container">
+
+    {% if upcoming %}
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <h3 style="color:var(--deep-navy);margin:0"><i class="fas fa-clock me-2 text-arctic"></i>Upcoming Events</h3>
+      <span class="badge-polar badge-approved" style="font-size:0.8rem">{{ upcoming|length }} scheduled</span>
+    </div>
+
+    <div class="row g-4 mb-5">
+      {% for event in upcoming %}
+      <div class="col-lg-4 col-md-6">
+        <a href="{% url 'news:event_detail' event.slug %}" class="text-decoration-none">
+          <div class="pc-card h-100">
+            <!-- Event image -->
+            <div class="pc-card-img-wrap" style="height:180px;position:relative">
+              {% if event.banner_image %}
+                <img src="{{ event.banner_image.url }}" alt="{{ event.title }}" loading="lazy">
+              {% else %}
+                {% if event.event_type == 'webinar' %}
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=75" alt="" loading="lazy">
+                {% elif event.event_type == 'competition' %}
+                  <img src="https://images.unsplash.com/photo-1467579424161-6bdd8ef27cfc?w=600&q=75" alt="" loading="lazy">
+                {% elif event.event_type == 'workshop' %}
+                  <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=75" alt="" loading="lazy">
+                {% else %}
+                  <img src="https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=600&q=75" alt="" loading="lazy">
+                {% endif %}
+              {% endif %}
+              <!-- Date badge -->
+              <div style="position:absolute;top:0.75rem;left:0.75rem;background:var(--arctic-blue);color:white;border-radius:var(--radius-sm);padding:0.3rem 0.6rem;text-align:center;min-width:52px;box-shadow:var(--shadow-sm)">
+                <div style="font-size:1.3rem;font-weight:900;line-height:1">{{ event.start_datetime|date:"d" }}</div>
+                <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:1px">{{ event.start_datetime|date:"M Y" }}</div>
+              </div>
+              {% if event.is_online %}
+              <div style="position:absolute;top:0.75rem;right:0.75rem">
+                <span class="badge-polar badge-new" style="font-size:0.68rem"><i class="fas fa-video me-1"></i>Online</span>
+              </div>
+              {% endif %}
+            </div>
+            <div class="pc-card-body d-flex flex-column">
+              <div class="d-flex gap-2 mb-2 flex-wrap">
+                <span class="pc-card-category">{{ event.get_event_type_display }}</span>
+                {% if event.is_featured %}<span class="badge-polar badge-featured"><i class="fas fa-star me-1"></i>Featured</span>{% endif %}
+              </div>
+              <h5 class="pc-card-title" style="font-size:1rem">{{ event.title }}</h5>
+              <p class="pc-card-text flex-grow-1" style="font-size:0.82rem">{{ event.description|truncatewords:22 }}</p>
+              <div class="pc-card-meta mt-auto pt-2 border-top">
+                <span><i class="fas fa-clock" style="color:var(--arctic-blue)"></i> {{ event.start_datetime|time:"H:i" }} IST</span>
+                {% if event.organizer %}<span><i class="fas fa-building" style="color:var(--arctic-blue)"></i> {{ event.organizer|truncatechars:30 }}</span>{% endif %}
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="pc-empty-state mb-5">
+      <i class="fas fa-calendar-times"></i>
+      <h4>No upcoming events scheduled</h4>
+      <p>Check back soon for new webinars and workshops.</p>
+    </div>
+    {% endif %}
+
+    <!-- Past events -->
+    {% if past %}
+    <h3 style="color:var(--deep-navy);margin-bottom:1.5rem">
+      <i class="fas fa-history me-2 text-arctic"></i>Past Events
+    </h3>
+    <div class="row g-3">
+      {% for event in past %}
+      <div class="col-lg-4 col-md-6">
+        <a href="{% url 'news:event_detail' event.slug %}" class="text-decoration-none">
+          <div class="pc-card p-3" style="opacity:0.8">
+            <div class="d-flex gap-3 align-items-center">
+              <div style="min-width:48px;text-align:center;background:var(--light-grey);border-radius:var(--radius-sm);padding:0.4rem">
+                <div style="font-size:1.2rem;font-weight:800;color:var(--deep-navy);line-height:1">{{ event.start_datetime|date:"d" }}</div>
+                <div style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase">{{ event.start_datetime|date:"M Y" }}</div>
+              </div>
+              <div>
+                <span class="badge-polar badge-category" style="font-size:0.65rem;margin-bottom:0.25rem;display:inline-block">{{ event.get_event_type_display }}</span>
+                <h6 style="color:var(--deep-navy);margin:0;font-size:0.875rem;line-height:1.4">{{ event.title }}</h6>
+                {% if event.organizer %}<div style="font-size:0.75rem;color:var(--text-muted)">{{ event.organizer|truncatechars:40 }}</div>{% endif %}
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

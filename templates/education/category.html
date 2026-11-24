@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{{ category.name }}{% endblock %}
+{% block content %}
+<section class="pc-page-header"><div class="container">
+  <h1><i class="{{ category.icon|default:'fas fa-book' }} me-2"></i>{{ category.name }}</h1>
+  {% if category.description %}<p style="color:rgba(255,255,255,0.75)">{{ category.description }}</p>{% endif %}
+</div></section>
+<section class="section-padding bg-light-grey"><div class="container">
+  <div class="row g-4">
+    {% for module in modules %}
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <a href="{% url 'education:module' module.slug %}" class="text-decoration-none">
+        <div class="pc-card h-100">
+          {% if module.thumbnail %}<div class="pc-card-img-wrap"><img src="{{ module.thumbnail.url }}" alt="{{ module.title }}"></div>{% endif %}
+          <div class="pc-card-body">
+            <span class="badge-polar badge-category mb-1">{{ module.get_difficulty_display }}</span>
+            <h6 class="pc-card-title">{{ module.title }}</h6>
+            <p class="pc-card-text" style="font-size:0.8rem">{{ module.description|truncatewords:18 }}</p>
+            <div class="pc-card-meta"><span><i class="fas fa-clock"></i> {{ module.duration_minutes }} min</span></div>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="pc-empty-state"><i class="fas fa-book"></i><h4>No modules in this category yet</h4></div></div>
+    {% endfor %}
+  </div>
+</div></section>
+{% endblock %}

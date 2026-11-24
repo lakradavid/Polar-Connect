@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Upload Research Paper{% endblock %}
+{% block content %}
+<section class="pc-page-header"><div class="container"><h1><i class="fas fa-upload me-2"></i>Submit Research Paper</h1></div></section>
+<section class="section-padding bg-light-grey"><div class="container" style="max-width:760px">
+<div class="pc-card p-4">
+  <div class="alert-polar-info mb-3"><i class="fas fa-info-circle"></i> Papers submitted by non-admin users will be reviewed before public display.</div>
+  {% if messages %}{% for msg in messages %}<div class="alert-polar-error mb-3"><i class="fas fa-exclamation-circle"></i> {{ msg }}</div>{% endfor %}{% endif %}
+  <form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="row g-3">
+      <div class="col-12"><label class="pc-form-label">Title *</label><input type="text" name="title" class="pc-form-control" required></div>
+      <div class="col-md-6"><label class="pc-form-label">Author(s) *</label><input type="text" name="authors" class="pc-form-control" required placeholder="Sharma P., Kumar R., …"></div>
+      <div class="col-md-6"><label class="pc-form-label">Institution</label><input type="text" name="institution" class="pc-form-control"></div>
+      <div class="col-md-6"><label class="pc-form-label">Category</label><select name="category" class="pc-form-control">{% for val, label in categories %}<option value="{{ val }}">{{ label }}</option>{% endfor %}</select></div>
+      <div class="col-md-6"><label class="pc-form-label">Publication Year</label><input type="number" name="publication_year" class="pc-form-control" min="1950" max="2030"></div>
+      <div class="col-md-6"><label class="pc-form-label">Journal Name</label><input type="text" name="journal_name" class="pc-form-control"></div>
+      <div class="col-md-6"><label class="pc-form-label">DOI</label><input type="text" name="doi" class="pc-form-control" placeholder="10.1000/xyz123"></div>
+      <div class="col-12"><label class="pc-form-label">Keywords</label><input type="text" name="keywords" class="pc-form-control" placeholder="ice, glaciology, climate change"></div>
+      <div class="col-12"><label class="pc-form-label">Abstract *</label><textarea name="abstract" class="pc-form-control" rows="5" required></textarea></div>
+      <div class="col-md-6"><label class="pc-form-label">Upload Paper (PDF)</label><input type="file" name="paper_file" class="pc-form-control" accept=".pdf"></div>
+      <div class="col-md-6"><label class="pc-form-label">Cover Image</label><input type="file" name="cover_image" class="pc-form-control" accept="image/*"></div>
+      <div class="col-12"><label class="pc-form-label">External Link</label><input type="url" name="external_link" class="pc-form-control" placeholder="https://…"></div>
+      <div class="col-12 d-flex gap-2 mt-2">
+        <button type="submit" class="btn-polar-primary"><i class="fas fa-upload me-1"></i>Submit Paper</button>
+        <a href="{% url 'research:list' %}" class="btn-polar-outline">Cancel</a>
+      </div>
+    </div>
+  </form>
+</div>
+</div></section>
+{% endblock %}

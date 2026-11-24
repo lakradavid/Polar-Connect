@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}Photo Gallery{% endblock %}
+{% block content %}
+
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-images me-2"></i>Polar Media Gallery</h1>
+    <p style="color:rgba(255,255,255,0.75)">Photographs, videos and media from polar research missions</p>
+  </div>
+</section>
+
+<section class="section-padding bg-light-grey">
+  <div class="container">
+
+    <!-- Filter bar -->
+    <div class="pc-filter-bar mb-4">
+      <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-4">
+          <div class="pc-search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" name="q" class="form-control" value="{{ q }}" placeholder="Search photos, tags…">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select name="category" class="pc-filter-select w-100">
+            <option value="">All Categories</option>
+            {% for cat in categories %}
+              <option value="{{ cat.pk }}" {% if category_id == cat.pk|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select name="type" class="pc-filter-select w-100">
+            <option value="">All Types</option>
+            {% for val, label in media_types %}
+              <option value="{{ val }}" {% if mtype == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+          <button type="submit" class="btn-polar-primary flex-grow-1"><i class="fas fa-search"></i> Filter</button>
+          <a href="{% url 'media_gallery:gallery' %}" class="btn-polar-dark" style="padding:0.5rem 0.75rem"><i class="fas fa-times"></i></a>
+          {% if user.is_authenticated %}
+          <a href="{% url 'media_gallery:upload' %}" class="btn-polar-cyan" style="padding:0.5rem 0.75rem" title="Upload"><i class="fas fa-upload"></i></a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+
+    <!-- Results count -->
+    {% if q or category_id or mtype %}
+    <p class="text-muted mb-3" style="font-size:0.875rem">
+      <strong>{{ assets|length }}</strong> result{{ assets|length|pluralize }} found
+      {% if q %}for "<strong>{{ q }}</strong>"{% endif %}
+    </p>
+    {% endif %}
+
+    <!-- Gallery grid -->
+    <div class="pc-media-grid">
+      {% for asset in assets %}
+        {% if asset.image %}
+          {# Uploaded file image #}
+          <div class="pc-media-item" data-lightbox
+               data-src="{{ asset.image.url }}"
+               data-caption="{{ asset.title }}">
+            <img src="{{ asset.image.url }}" alt="{{ asset.title }}" loading="lazy">
+            <div class="pc-media-overlay">
+              <div>
+                <h6>{{ asset.title }}</h6>
+                {% if asset.category %}<small style="color:var(--cyan)">{{ asset.category.name }}</small>{% endif %}
+              </div>
+            </div>
+          </div>
+        {% elif asset.embed_url %}
+          {# Unsplash / external URL stored as embed_url #}
+          <div class="pc-media-item" data-lightbox
+               data-src="{{ asset.embed_url }}"
+               data-caption="{{ asset.title }}">
+            <img src="{{ asset.embed_url }}" alt="{{ asset.title }}" loading="lazy"
+                 onerror="this.src='https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=600&q=60'">
+            <div class="pc-media-overlay">
+              <div>
+                <h6>{{ asset.title }}</h6>
+                {% if asset.category %}<small style="color:var(--cyan)">{{ asset.category.name }}</small>{% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% empty %}
+        {# Always-visible illustrative placeholders #}
+        {% for img in placeholder_images %}
+        <div class="pc-media-item" data-lightbox
+             data-src="{{ img.src }}" data-caption="{{ img.cap }}">
+          <img src="{{ img.src }}" alt="{{ img.cap }}" loading="lazy">
+          <div class="pc-media-overlay"><h6>{{ img.cap }}</h6></div>
+        </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    {% if not assets %}
+    <div class="text-center mt-3">
+      <small class="text-muted">
+        <i class="fas fa-info-circle me-1"></i>
+        Images shown are illustrative stock photographs, not verified polar research images.
+      </small>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

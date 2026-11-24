@@ -1,0 +1,511 @@
+[
+  {
+    "model": "stations.researchstation",
+    "pk": 1,
+    "fields": {
+      "name": "Maitri Station",
+      "slug": "maitri-station",
+      "region": "antarctica",
+      "country": "India",
+      "operating_institution": "National Centre for Polar and Ocean Research (NCPOR)",
+      "latitude": -70.77,
+      "longitude": 11.73,
+      "established_year": 1989,
+      "description": "Maitri is India's second Antarctic research station, located in the Schirmacher Oasis region of Antarctica. It replaced the earlier Dakshin Gangotri station and has been operational since 1989. [DEMONSTRATION DATA – verify details from official NCPOR sources.]",
+      "research_activities": "Glaciology, atmospheric science, geomagnetism, meteorology, upper atmosphere physics and biological sciences.",
+      "is_active": true,
+      "is_demo_data": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "stations.researchstation",
+    "pk": 2,
+    "fields": {
+      "name": "Bharati Station",
+      "slug": "bharati-station",
+      "region": "antarctica",
+      "country": "India",
+      "operating_institution": "National Centre for Polar and Ocean Research (NCPOR)",
+      "latitude": -69.41,
+      "longitude": 76.19,
+      "established_year": 2012,
+      "description": "Bharati is India's third and most modern Antarctic research station, established in the Larsemann Hills region in 2012. It is designed to operate year-round and supports research in oceanography and atmospheric science. [DEMONSTRATION DATA – verify details from official NCPOR sources.]",
+      "research_activities": "Oceanography, marine biology, atmospheric research, environmental monitoring.",
+      "is_active": true,
+      "is_demo_data": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "stations.maplocation",
+    "pk": 1,
+    "fields": {
+      "name": "Geographic South Pole",
+      "location_type": "landmark",
+      "latitude": -90.0,
+      "longitude": 0.0,
+      "description": "The southernmost point on Earth, located on the Antarctic continent at an elevation of approximately 2,835 metres above sea level. Home to the Amundsen–Scott South Pole Station.",
+      "research_activities": "Astronomical observations, neutrino detection (IceCube), climate research.",
+      "is_demo_data": false
+    }
+  },
+  {
+    "model": "stations.maplocation",
+    "pk": 2,
+    "fields": {
+      "name": "Svalbard Archipelago",
+      "location_type": "landmark",
+      "latitude": 78.22,
+      "longitude": 15.65,
+      "description": "Norwegian Arctic archipelago hosting numerous research stations from multiple countries. A key site for Arctic climate monitoring and biodiversity research.",
+      "research_activities": "Arctic climate monitoring, glaciology, marine biology.",
+      "is_demo_data": false
+    }
+  },
+  {
+    "model": "expeditions.expedition",
+    "pk": 1,
+    "fields": {
+      "name": "1st Indian Antarctic Expedition",
+      "slug": "1st-indian-antarctic-expedition",
+      "expedition_year": 1981,
+      "region": "antarctica",
+      "location": "Antarctica – Dakshin Gangotri site",
+      "participating_institutions": "Department of Ocean Development\nSurvey of India\nGeological Survey of India",
+      "objectives": "To establish India's first presence in Antarctica and conduct preliminary scientific surveys including geological mapping, meteorological observations and biological surveys. [DEMONSTRATION DATA – verify details from official sources.]",
+      "findings": "Successful establishment of India's first Antarctic base camp. Collection of geological, meteorological and biological data from the region. India subsequently claimed observer status at the Antarctic Treaty System. [DEMONSTRATION DATA]",
+      "chief_scientist": "Dr. S. Z. Qasim (demonstration data)",
+      "team_size": 21,
+      "duration_days": 42,
+      "is_featured": true,
+      "is_demo_data": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "expeditions.expedition",
+    "pk": 2,
+    "fields": {
+      "name": "Indian Arctic Expedition 2007",
+      "slug": "indian-arctic-expedition-2007",
+      "expedition_year": 2007,
+      "region": "arctic",
+      "location": "Ny-Ålesund, Svalbard, Norway",
+      "participating_institutions": "National Centre for Antarctic and Ocean Research (NCAOR)\nIndian Institute of Technology\nSpace Applications Centre",
+      "objectives": "Establish Himadri, India's Arctic research station at Ny-Ålesund, Svalbard. Conduct atmospheric, glaciological and biological studies in the Arctic region. [DEMONSTRATION DATA]",
+      "findings": "Successful establishment of Himadri station. Data collected on Arctic glacier dynamics, atmospheric aerosols and sea ice extent. Comparative studies initiated with Antarctic findings. [DEMONSTRATION DATA]",
+      "chief_scientist": "Dr. Rasik Ravindra (demonstration data)",
+      "team_size": 12,
+      "duration_days": 30,
+      "is_featured": true,
+      "is_demo_data": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "expeditions.expedition",
+    "pk": 3,
+    "fields": {
+      "name": "43rd Indian Scientific Expedition to Antarctica",
+      "slug": "43rd-indian-scientific-expedition-antarctica",
+      "expedition_year": 2024,
+      "region": "antarctica",
+      "location": "Maitri and Bharati Stations, Antarctica",
+      "participating_institutions": "National Centre for Polar and Ocean Research (NCPOR)\nMinistry of Earth Sciences",
+      "objectives": "Continuation of long-term environmental monitoring, glaciological surveys, atmospheric studies and marine biology research at India's two Antarctic stations. [DEMONSTRATION DATA]",
+      "findings": "Ongoing research. Data collection and analysis in progress. [DEMONSTRATION DATA]",
+      "chief_scientist": "To be confirmed (demonstration data)",
+      "team_size": 40,
+      "duration_days": 90,
+      "is_featured": true,
+      "is_demo_data": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "news.newscategory",
+    "pk": 1,
+    "fields": {"name": "Research Announcement", "slug": "research-announcement"}
+  },
+  {
+    "model": "news.newscategory",
+    "pk": 2,
+    "fields": {"name": "Expedition Update", "slug": "expedition-update"}
+  },
+  {
+    "model": "news.newscategory",
+    "pk": 3,
+    "fields": {"name": "Climate Science", "slug": "climate-science"}
+  },
+  {
+    "model": "news.newscategory",
+    "pk": 4,
+    "fields": {"name": "Policy & Governance", "slug": "policy-governance"}
+  },
+  {
+    "model": "media_gallery.mediacategory",
+    "pk": 1,
+    "fields": {"name": "Antarctic Landscapes", "slug": "antarctic-landscapes"}
+  },
+  {
+    "model": "media_gallery.mediacategory",
+    "pk": 2,
+    "fields": {"name": "Arctic Landscapes", "slug": "arctic-landscapes"}
+  },
+  {
+    "model": "media_gallery.mediacategory",
+    "pk": 3,
+    "fields": {"name": "Scientific Research", "slug": "scientific-research"}
+  },
+  {
+    "model": "media_gallery.mediacategory",
+    "pk": 4,
+    "fields": {"name": "Expedition Photography", "slug": "expedition-photography"}
+  },
+  {
+    "model": "media_gallery.mediacategory",
+    "pk": 5,
+    "fields": {"name": "Polar Wildlife", "slug": "polar-wildlife"}
+  },
+  {
+    "model": "media_gallery.mediacategory",
+    "pk": 6,
+    "fields": {"name": "Research Stations", "slug": "research-stations"}
+  },
+  {
+    "model": "community.discussionforum",
+    "pk": 1,
+    "fields": {
+      "name": "Ask a Scientist",
+      "slug": "ask-a-scientist",
+      "description": "Post your questions about polar science and get answers from researchers and educators.",
+      "icon": "fas fa-user-tie",
+      "order": 1
+    }
+  },
+  {
+    "model": "community.discussionforum",
+    "pk": 2,
+    "fields": {
+      "name": "Research Discussions",
+      "slug": "research-discussions",
+      "description": "Discuss ongoing research, methodologies and scientific findings related to polar regions.",
+      "icon": "fas fa-flask",
+      "order": 2
+    }
+  },
+  {
+    "model": "community.discussionforum",
+    "pk": 3,
+    "fields": {
+      "name": "Student Zone",
+      "slug": "student-zone",
+      "description": "A space for students to ask questions, share learning resources and connect with peers.",
+      "icon": "fas fa-graduation-cap",
+      "order": 3
+    }
+  },
+  {
+    "model": "community.discussionforum",
+    "pk": 4,
+    "fields": {
+      "name": "Climate & Environment",
+      "slug": "climate-environment",
+      "description": "Discuss climate change, polar melting, sea-level rise and environmental policy.",
+      "icon": "fas fa-leaf",
+      "order": 4
+    }
+  },
+  {
+    "model": "education.learningcategory",
+    "pk": 1,
+    "fields": {
+      "name": "Introduction to Polar Regions",
+      "slug": "introduction-polar-regions",
+      "description": "Start your polar science journey. Understand the geography, climate and significance of Earth's polar regions.",
+      "icon": "fas fa-globe-americas",
+      "order": 1
+    }
+  },
+  {
+    "model": "education.learningcategory",
+    "pk": 2,
+    "fields": {
+      "name": "Antarctic Ecosystems",
+      "slug": "antarctic-ecosystems",
+      "description": "Explore life in Antarctica — from microscopic organisms to iconic penguins and seals.",
+      "icon": "fas fa-leaf",
+      "order": 2
+    }
+  },
+  {
+    "model": "education.learningcategory",
+    "pk": 3,
+    "fields": {
+      "name": "Arctic Ecosystems",
+      "slug": "arctic-ecosystems",
+      "description": "Discover the unique biodiversity of the Arctic, including polar bears, walruses and tundra vegetation.",
+      "icon": "fas fa-paw",
+      "order": 3
+    }
+  },
+  {
+    "model": "education.learningcategory",
+    "pk": 4,
+    "fields": {
+      "name": "Ice Sheets and Glaciers",
+      "slug": "ice-sheets-glaciers",
+      "description": "Understand how ice sheets form, flow and melt — and why they matter for sea-level rise and global climate.",
+      "icon": "fas fa-snowflake",
+      "order": 4
+    }
+  },
+  {
+    "model": "education.learningcategory",
+    "pk": 5,
+    "fields": {
+      "name": "Climate Change and Polar Regions",
+      "slug": "climate-change-polar",
+      "description": "Learn how polar environments both respond to and amplify the effects of global climate change.",
+      "icon": "fas fa-temperature-high",
+      "order": 5
+    }
+  },
+  {
+    "model": "education.learningcategory",
+    "pk": 6,
+    "fields": {
+      "name": "Polar Wildlife",
+      "slug": "polar-wildlife",
+      "description": "Meet the remarkable animals adapted to survive in the harshest environments on Earth.",
+      "icon": "fas fa-fish",
+      "order": 6
+    }
+  },
+  {
+    "model": "education.learningcategory",
+    "pk": 7,
+    "fields": {
+      "name": "Ocean and Marine Research",
+      "slug": "ocean-marine-research",
+      "description": "Dive into the science of polar oceans — currents, salinity, marine biodiversity and ocean acidification.",
+      "icon": "fas fa-water",
+      "order": 7
+    }
+  },
+  {
+    "model": "education.learningcategory",
+    "pk": 8,
+    "fields": {
+      "name": "Scientific Expeditions",
+      "slug": "scientific-expeditions",
+      "description": "Follow the story of polar exploration — from early expeditions to India's modern Antarctic missions.",
+      "icon": "fas fa-ship",
+      "order": 8
+    }
+  },
+  {
+    "model": "education.learningmodule",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "title": "What Are the Polar Regions?",
+      "slug": "what-are-polar-regions",
+      "description": "An introduction to the Arctic and Antarctic — their geography, climate and global importance.",
+      "content": "The polar regions are the areas around Earth's geographic poles — the Arctic in the north and Antarctica in the south. Despite being at opposite ends of the planet, they share some characteristics: both experience extreme cold, months of continuous daylight or darkness, and are covered by snow and ice.\n\n**The Arctic**\nThe Arctic is primarily an ocean — the Arctic Ocean — surrounded by the landmasses of North America, Europe and Asia. It includes Greenland, the world's largest island, and numerous archipelagos. The Arctic sea ice extent has been declining significantly due to climate change.\n\n**Antarctica**\nAntarctica is a continent — a landmass — covered by an ice sheet averaging 2.3 km in thickness. It is the coldest, driest and windiest continent on Earth. No country owns Antarctica; it is governed by the Antarctic Treaty System, which India signed in 1983.\n\n**Why They Matter**\nThe polar regions regulate Earth's climate by reflecting solar radiation back into space (the albedo effect), driving global ocean circulation, and storing 90% of the world's fresh water as ice. Changes in the poles have direct consequences for global sea levels, weather patterns and biodiversity.",
+      "difficulty": "beginner",
+      "duration_minutes": 25,
+      "order": 1,
+      "is_published": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "education.learningmodule",
+    "pk": 2,
+    "fields": {
+      "category": 4,
+      "title": "Understanding Ice Sheets",
+      "slug": "understanding-ice-sheets",
+      "description": "Learn how polar ice sheets form, move and contribute to sea-level rise.",
+      "content": "An ice sheet is a mass of glacial ice covering more than 50,000 km². Today, only two ice sheets exist on Earth: the Antarctic Ice Sheet and the Greenland Ice Sheet.\n\n**Formation**\nIce sheets form over thousands of years when snowfall exceeds melting. As layers of snow accumulate, the lower layers compress into ice under the weight above.\n\n**Flow and Movement**\nIce sheets are not static. They flow slowly under gravity, spreading outward from the centre. Where they reach the ocean, they form ice shelves — floating extensions of the ice sheet.\n\n**Sea Level Contribution**\nIf the entire Antarctic Ice Sheet were to melt, global sea levels would rise by approximately 58 metres. The West Antarctic Ice Sheet is considered particularly vulnerable due to its marine-based bedrock.\n\n**India's Research**\nIndia conducts glaciological research at both Maitri and Bharati stations, measuring ice mass balance, flow velocities and sub-glacial conditions to contribute to global sea-level projections.",
+      "difficulty": "intermediate",
+      "duration_minutes": 35,
+      "order": 1,
+      "is_published": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "education.learningmodule",
+    "pk": 3,
+    "fields": {
+      "category": 5,
+      "title": "Climate Change and the Poles",
+      "slug": "climate-change-poles",
+      "description": "How polar regions respond to and amplify global climate change.",
+      "content": "Polar regions are warming faster than anywhere else on Earth — a phenomenon called 'Arctic amplification'. The Arctic is warming at two to four times the global average rate.\n\n**Feedback Loops**\nAs sea ice melts, darker ocean water is exposed. Ocean water absorbs more heat than ice, causing further warming — a positive feedback loop. Similarly, as permafrost thaws, it releases stored carbon dioxide and methane, further accelerating warming.\n\n**Observed Changes**\n- Arctic sea ice extent has declined by approximately 13% per decade since 1979.\n- Antarctic ice shelves have collapsed, allowing glaciers behind them to accelerate toward the ocean.\n- Greenland is losing ice at an accelerating rate, currently contributing approximately 0.7 mm to sea-level rise per year.\n\n**Global Consequences**\nChanges in the poles affect global weather patterns, ocean circulation (the thermohaline circulation or 'ocean conveyor belt'), and sea levels worldwide. Disruption of the jet stream due to Arctic warming may be linked to more extreme weather events at mid-latitudes.",
+      "difficulty": "intermediate",
+      "duration_minutes": 40,
+      "order": 1,
+      "is_published": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "education.quiz",
+    "pk": 1,
+    "fields": {
+      "module": 1,
+      "title": "Polar Regions Quiz",
+      "description": "Test your understanding of the Arctic and Antarctic regions.",
+      "passing_score": 60,
+      "time_limit_minutes": 10
+    }
+  },
+  {
+    "model": "education.question",
+    "pk": 1,
+    "fields": {
+      "quiz": 1,
+      "question_text": "Which of the following best describes Antarctica?",
+      "option_a": "An ocean surrounded by land",
+      "option_b": "A continent covered by an ice sheet",
+      "option_c": "A group of islands in the Southern Ocean",
+      "option_d": "A sea ice region with no permanent land",
+      "correct_option": "B",
+      "explanation": "Antarctica is the southernmost continent, covered by an ice sheet averaging 2.3 km thick.",
+      "order": 1
+    }
+  },
+  {
+    "model": "education.question",
+    "pk": 2,
+    "fields": {
+      "quiz": 1,
+      "question_text": "Approximately what percentage of Earth's fresh water is stored in polar ice?",
+      "option_a": "30%",
+      "option_b": "60%",
+      "option_c": "90%",
+      "option_d": "50%",
+      "correct_option": "C",
+      "explanation": "About 90% of the world's fresh water is locked up in the ice sheets and glaciers of the polar regions.",
+      "order": 2
+    }
+  },
+  {
+    "model": "education.question",
+    "pk": 3,
+    "fields": {
+      "quiz": 1,
+      "question_text": "In which year did India conduct its first Antarctic expedition?",
+      "option_a": "1975",
+      "option_b": "1981",
+      "option_c": "1990",
+      "option_d": "1969",
+      "correct_option": "B",
+      "explanation": "India's first Antarctic expedition took place in 1981, marking the beginning of India's polar research programme.",
+      "order": 3
+    }
+  },
+  {
+    "model": "education.question",
+    "pk": 4,
+    "fields": {
+      "quiz": 1,
+      "question_text": "What is the name of India's research station in the Arctic?",
+      "option_a": "Maitri",
+      "option_b": "Bharati",
+      "option_c": "Himadri",
+      "option_d": "Dakshin Gangotri",
+      "correct_option": "C",
+      "explanation": "Himadri is India's Arctic research station, located at Ny-Ålesund, Svalbard, Norway. Maitri and Bharati are India's Antarctic stations.",
+      "order": 4
+    }
+  },
+  {
+    "model": "education.question",
+    "pk": 5,
+    "fields": {
+      "quiz": 1,
+      "question_text": "What phenomenon describes the fact that the Arctic is warming faster than the rest of the planet?",
+      "option_a": "Polar vortex",
+      "option_b": "Albedo effect",
+      "option_c": "Arctic amplification",
+      "option_d": "Thermohaline reversal",
+      "correct_option": "C",
+      "explanation": "Arctic amplification refers to the observation that the Arctic warms at two to four times the global average rate, driven by feedback loops including sea-ice loss.",
+      "order": 5
+    }
+  },
+  {
+    "model": "repository.knowledgeresource",
+    "pk": 1,
+    "fields": {
+      "title": "Introduction to Antarctic Ice Sheet Dynamics",
+      "author": "PolarConnect Education Team",
+      "institution": "Ministry of Earth Sciences",
+      "abstract": "A comprehensive introduction to the Antarctic ice sheet — its structure, dynamics, mass balance and contribution to global sea-level rise. This educational document is intended for students and general audiences. [DEMONSTRATION CONTENT]",
+      "keywords": "ice sheet, Antarctica, sea level, glaciology",
+      "category": "glaciology",
+      "resource_type": "educational",
+      "is_featured": true,
+      "is_published": true,
+      "download_count": 0,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "uploaded_by": null,
+      "uploaded_file": "",
+      "external_url": "",
+      "thumbnail": "",
+      "publication_date": "2024-01-01"
+    }
+  },
+  {
+    "model": "repository.knowledgeresource",
+    "pk": 2,
+    "fields": {
+      "title": "Arctic Sea Ice Trends and Climate Implications",
+      "author": "PolarConnect Research Team",
+      "institution": "Ministry of Earth Sciences",
+      "abstract": "An overview of observed trends in Arctic sea ice extent, volume and seasonality, and their implications for global climate systems, weather patterns and biodiversity. [DEMONSTRATION CONTENT]",
+      "keywords": "Arctic, sea ice, climate change, albedo",
+      "category": "climate_change",
+      "resource_type": "report",
+      "is_featured": true,
+      "is_published": true,
+      "download_count": 0,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "uploaded_by": null,
+      "uploaded_file": "",
+      "external_url": "",
+      "thumbnail": "",
+      "publication_date": "2024-01-01"
+    }
+  },
+  {
+    "model": "repository.knowledgeresource",
+    "pk": 3,
+    "fields": {
+      "title": "India's Polar Research Programme: An Overview",
+      "author": "National Centre for Polar and Ocean Research",
+      "institution": "NCPOR, Ministry of Earth Sciences",
+      "abstract": "Overview of India's polar research activities across Antarctica and the Arctic, including the history of Indian expeditions, current research priorities and future directions. [DEMONSTRATION CONTENT — not an official NCPOR document]",
+      "keywords": "India, NCPOR, polar research, expedition, Maitri, Bharati, Himadri",
+      "category": "antarctic",
+      "resource_type": "report",
+      "is_featured": true,
+      "is_published": true,
+      "download_count": 0,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "uploaded_by": null,
+      "uploaded_file": "",
+      "external_url": "https://www.ncpor.res.in",
+      "thumbnail": "",
+      "publication_date": "2024-01-01"
+    }
+  }
+]

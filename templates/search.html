@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %}Search{% endblock %}
+{% block content %}
+
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-search me-2"></i>Search PolarConnect</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">Search</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="section-padding">
+  <div class="container">
+
+    <!-- Search Form -->
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-8">
+        <form method="get" action="{% url 'search' %}" id="globalSearchForm">
+          <div class="pc-search-bar mb-3">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" name="q" id="globalSearchInput" class="form-control"
+                   value="{{ query }}" placeholder="Search research, news, expeditions, media…" autofocus>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            {% for cat_val, cat_label in category_choices %}
+            <label style="cursor:pointer">
+              <input type="radio" name="category" value="{{ cat_val }}" {% if category == cat_val %}checked{% endif %} style="display:none">
+              <span class="badge-polar badge-category px-3 py-2" style="cursor:pointer;font-size:0.8rem;{% if category == cat_val %}background:var(--arctic-blue);color:white;{% endif %}">{{ cat_label }}</span>
+            </label>
+            {% endfor %}
+          </div>
+          <div class="mt-3">
+            <button type="submit" class="btn-polar-primary">
+              <i class="fas fa-search"></i> Search
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if query %}
+    <p class="text-muted mb-4">
+      <strong>{{ total }}</strong> result{{ total|pluralize }} for "<strong>{{ query }}</strong>"
+    </p>
+
+    {% if results.research %}
+    <h4 class="mb-3" style="color:var(--deep-navy)"><i class="fas fa-flask me-2 text-arctic"></i>Research Papers ({{ results.research|length }})</h4>
+    <div class="row g-3 mb-5">
+      {% for item in results.research %}
+      <div class="col-lg-6">
+        <div class="pc-card"><div class="pc-card-body">
+          <span class="pc-card-category">{{ item.get_category_display }}</span>
+          <h6 class="pc-card-title"><a href="{% url 'research:detail' item.pk %}">{{ item.title }}</a></h6>
+          <p class="pc-card-text">{{ item.abstract|truncatewords:20 }}</p>
+          <div class="pc-card-meta"><span><i class="fas fa-user"></i> {{ item.authors|truncatechars:40 }}</span></div>
+        </div></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if results.resources %}
+    <h4 class="mb-3" style="color:var(--deep-navy)"><i class="fas fa-database me-2 text-arctic"></i>Knowledge Resources ({{ results.resources|length }})</h4>
+    <div class="row g-3 mb-5">
+      {% for item in results.resources %}
+      <div class="col-lg-6">
+        <div class="pc-research-card">
+          <div class="pc-research-card-icon"><i class="fas fa-file-pdf"></i></div>
+          <div>
+            <span class="pc-card-category">{{ item.get_category_display }}</span>
+            <h6 class="pc-card-title" style="font-size:0.9rem"><a href="{% url 'repository:detail' item.pk %}">{{ item.title }}</a></h6>
+            <div class="pc-card-meta"><span><i class="fas fa-user"></i> {{ item.author }}</span></div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if results.news %}
+    <h4 class="mb-3" style="color:var(--deep-navy)"><i class="fas fa-newspaper me-2 text-arctic"></i>News Articles ({{ results.news|length }})</h4>
+    <div class="row g-3 mb-5">
+      {% for item in results.news %}
+      <div class="col-lg-6">
+        <div class="pc-card"><div class="pc-card-body">
+          <h6 class="pc-card-title"><a href="{% url 'news:detail' item.slug %}">{{ item.title }}</a></h6>
+          <p class="pc-card-text">{{ item.summary|truncatewords:20 }}</p>
+        </div></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if results.expeditions %}
+    <h4 class="mb-3" style="color:var(--deep-navy)"><i class="fas fa-ship me-2 text-arctic"></i>Expeditions ({{ results.expeditions|length }})</h4>
+    <div class="row g-3 mb-5">
+      {% for item in results.expeditions %}
+      <div class="col-lg-6">
+        <div class="pc-card"><div class="pc-card-body">
+          <span class="pc-card-category">{{ item.get_region_display }}</span>
+          <h6 class="pc-card-title"><a href="{% url 'expeditions:detail' item.slug %}">{{ item.name }}</a></h6>
+          <div class="pc-card-meta"><span><i class="fas fa-calendar"></i> {{ item.expedition_year }}</span></div>
+        </div></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if total == 0 %}
+    <div class="pc-empty-state">
+      <i class="fas fa-search-minus"></i>
+      <h4>No results found for "{{ query }}"</h4>
+      <p>Try different keywords or browse the sections above.</p>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="pc-empty-state">
+      <i class="fas fa-search"></i>
+      <h4>Enter a search term above</h4>
+      <p>Search across research papers, news articles, expeditions, gallery and more.</p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const categoryChoices = document.querySelectorAll('input[name="category"]');
+categoryChoices.forEach(radio => {
+  radio.addEventListener('change', () => {
+    categoryChoices.forEach(r => {
+      r.nextElementSibling.style.background = '';
+      r.nextElementSibling.style.color = '';
+    });
+    if (radio.checked) {
+      radio.nextElementSibling.style.background = 'var(--arctic-blue)';
+      radio.nextElementSibling.style.color = 'white';
+    }
+  });
+});
+</script>
+{% endblock %}

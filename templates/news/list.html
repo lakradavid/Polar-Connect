@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block title %}News & Announcements{% endblock %}
+{% block content %}
+
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-newspaper me-2"></i>News & Announcements</h1>
+    <p style="color:rgba(255,255,255,0.75)">Latest polar science news, research announcements and expedition updates</p>
+  </div>
+</section>
+
+<section class="section-padding bg-light-grey">
+  <div class="container">
+
+    <!-- Filter bar -->
+    <div class="pc-filter-bar mb-4">
+      <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-5">
+          <div class="pc-search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" name="q" class="form-control" value="{{ q }}" placeholder="Search news articles…">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select name="category" class="pc-filter-select w-100" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for cat in categories %}
+            <option value="{{ cat.slug }}" {% if category == cat.slug %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4 d-flex gap-2">
+          <button type="submit" class="btn-polar-primary flex-grow-1">
+            <i class="fas fa-search me-1"></i> Search
+          </button>
+          {% if q or category %}
+          <a href="{% url 'news:list' %}" class="btn-polar-dark" style="padding:0.5rem 0.8rem">
+            <i class="fas fa-times"></i>
+          </a>
+          {% endif %}
+          {% if user.is_admin_role %}
+          <a href="{% url 'news:create' %}" class="btn-polar-cyan" style="white-space:nowrap">
+            <i class="fas fa-plus me-1"></i> New
+          </a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+
+    <!-- Featured Article -->
+    {% if featured %}
+    <div class="pc-card mb-5" style="overflow:hidden">
+      <div class="row g-0">
+        <div class="col-md-5" style="min-height:280px;overflow:hidden;position:relative">
+          {% if featured.featured_image %}
+            <img src="{{ featured.featured_image.url }}" alt="{{ featured.title }}"
+                 style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+          {% else %}
+            {# Fallback hero image based on category #}
+            {% if 'expedition' in featured.category.slug|default:'' %}
+              <img src="https://images.unsplash.com/photo-1519832979-6fa011b87667?w=700&q=80"
+                   alt="{{ featured.title }}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+            {% elif 'climate' in featured.category.slug|default:'' %}
+              <img src="https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=700&q=80"
+                   alt="{{ featured.title }}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+            {% else %}
+              <img src="https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=700&q=80"
+                   alt="{{ featured.title }}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+            {% endif %}
+          {% endif %}
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(7,27,51,0.2),transparent)"></div>
+        </div>
+        <div class="col-md-7 p-4 d-flex flex-column justify-content-center">
+          <div class="d-flex gap-2 mb-2 flex-wrap">
+            {% if featured.category %}<span class="pc-card-category">{{ featured.category.name }}</span>{% endif %}
+            <span class="badge-polar badge-featured"><i class="fas fa-star me-1"></i>Featured</span>
+          </div>
+          <h2 style="color:var(--deep-navy);font-size:1.5rem;line-height:1.3;margin-bottom:0.75rem">
+            <a href="{% url 'news:detail' featured.slug %}" style="color:var(--deep-navy)">{{ featured.title }}</a>
+          </h2>
+          <p style="color:var(--text-muted);line-height:1.7;margin-bottom:1rem">{{ featured.summary }}</p>
+          <div class="pc-card-meta mb-3">
+            {% if featured.published_at %}<span><i class="fas fa-calendar"></i> {{ featured.published_at|date:"M d, Y" }}</span>{% endif %}
+            {% if featured.author %}<span><i class="fas fa-user"></i> {{ featured.author.get_display_name }}</span>{% endif %}
+            <span><i class="fas fa-eye"></i> {{ featured.view_count }} views</span>
+          </div>
+          <div>
+            <a href="{% url 'news:detail' featured.slug %}" class="btn-polar-primary">
+              Read Article <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Article grid -->
+    <div class="row g-4">
+      {% for article in articles %}
+      {% if not article.is_featured or not featured %}
+      <div class="col-lg-4 col-md-6">
+        <div class="pc-news-card h-100">
+          <div class="pc-news-card-img" style="height:200px">
+            {% if article.featured_image %}
+              <img src="{{ article.featured_image.url }}" alt="{{ article.title }}" loading="lazy">
+            {% else %}
+              {# Category-matched Unsplash fallbacks #}
+              {% with cat=article.category.slug|default:'' %}
+              {% if 'expedition' in cat %}
+                <img src="https://images.unsplash.com/photo-1519832979-6fa011b87667?w=600&q=75" alt="{{ article.title }}" loading="lazy">
+              {% elif 'climate' in cat %}
+                <img src="https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=75" alt="{{ article.title }}" loading="lazy">
+              {% elif 'technology' in cat %}
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=75" alt="{{ article.title }}" loading="lazy">
+              {% elif 'education' in cat %}
+                <img src="https://images.unsplash.com/photo-1467579424161-6bdd8ef27cfc?w=600&q=75" alt="{{ article.title }}" loading="lazy">
+              {% elif 'policy' in cat %}
+                <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=75" alt="{{ article.title }}" loading="lazy">
+              {% else %}
+                <img src="https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=600&q=75" alt="{{ article.title }}" loading="lazy">
+              {% endif %}
+              {% endwith %}
+            {% endif %}
+          </div>
+          <div class="pc-news-card-body d-flex flex-column">
+            {% if article.category %}
+            <span class="pc-card-category">{{ article.category.name }}</span>
+            {% endif %}
+            <h5 class="pc-card-title mt-1">
+              <a href="{% url 'news:detail' article.slug %}">{{ article.title }}</a>
+            </h5>
+            <p class="pc-card-text flex-grow-1">{{ article.summary|truncatewords:25 }}</p>
+            <div class="pc-card-meta mt-auto pt-2 border-top">
+              {% if article.published_at %}<span><i class="fas fa-calendar"></i> {{ article.published_at|date:"M d, Y" }}</span>{% endif %}
+              <span><i class="fas fa-eye"></i> {{ article.view_count }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% empty %}
+      <div class="col-12">
+        <div class="pc-empty-state">
+          <i class="fas fa-newspaper"></i>
+          <h4>No articles found</h4>
+          <p>Try different search terms or browse all categories.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{{ station.name }}{% endblock %}
+{% block content %}
+<section class="pc-page-header"><div class="container">
+  {% if station.is_demo_data %}<div class="alert-polar-info mb-3" style="display:inline-flex;font-size:0.8rem"><i class="fas fa-info-circle"></i> This entry contains demonstration data, not verified official information.</div>{% endif %}
+  <span class="pc-card-category d-inline-block mb-2">{{ station.get_region_display }}</span>
+  <h1>{{ station.name }}</h1>
+  <div class="d-flex gap-3 flex-wrap mt-2" style="color:rgba(255,255,255,0.65);font-size:0.85rem">
+    <span><i class="fas fa-flag me-1"></i>{{ station.country }}</span>
+    {% if station.established_year %}<span><i class="fas fa-calendar me-1"></i>Established {{ station.established_year }}</span>{% endif %}
+    {% if station.operating_institution %}<span><i class="fas fa-building me-1"></i>{{ station.operating_institution }}</span>{% endif %}
+    <span><i class="fas fa-map-pin me-1"></i>{{ station.latitude|floatformat:4 }}°, {{ station.longitude|floatformat:4 }}°</span>
+  </div>
+</div></section>
+<section class="section-padding bg-light-grey"><div class="container">
+  <div class="row g-4">
+    <div class="col-lg-8">
+      {% if station.station_image %}<div class="pc-card mb-4" style="overflow:hidden"><img src="{{ station.station_image.url }}" alt="{{ station.name }}" style="width:100%;height:320px;object-fit:cover"></div>{% endif %}
+      <div class="pc-card p-4 mb-4">
+        <h4 style="color:var(--deep-navy);margin-bottom:1rem">About this Station</h4>
+        <p style="line-height:1.9;color:var(--dark-grey)">{{ station.description }}</p>
+      </div>
+      {% if station.research_activities %}
+      <div class="pc-card p-4">
+        <h4 style="color:var(--deep-navy);margin-bottom:1rem"><i class="fas fa-flask me-2 text-arctic"></i>Research Activities</h4>
+        <p style="line-height:1.9;color:var(--dark-grey)">{{ station.research_activities }}</p>
+      </div>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      <div class="pc-card p-4 mb-3">
+        <h6 style="color:var(--deep-navy);margin-bottom:1rem"><i class="fas fa-info-circle me-2 text-arctic"></i>Station Details</h6>
+        <table style="font-size:0.875rem;width:100%">
+          <tr><td style="color:var(--text-muted);padding:0.3rem 0;width:50%">Region</td><td><strong>{{ station.get_region_display }}</strong></td></tr>
+          <tr><td style="color:var(--text-muted)">Country</td><td><strong>{{ station.country }}</strong></td></tr>
+          {% if station.established_year %}<tr><td style="color:var(--text-muted)">Established</td><td><strong>{{ station.established_year }}</strong></td></tr>{% endif %}
+          <tr><td style="color:var(--text-muted)">Latitude</td><td><strong>{{ station.latitude }}°</strong></td></tr>
+          <tr><td style="color:var(--text-muted)">Longitude</td><td><strong>{{ station.longitude }}°</strong></td></tr>
+          <tr><td style="color:var(--text-muted)">Status</td><td>{% if station.is_active %}<span class="badge-polar badge-approved">Active</span>{% else %}<span class="badge-polar" style="background:rgba(231,76,60,0.1);color:var(--danger)">Inactive</span>{% endif %}</td></tr>
+        </table>
+      </div>
+      <a href="{% url 'stations:map' %}" class="btn-polar-primary w-100 justify-content-center mb-2"><i class="fas fa-map me-1"></i>View on Map</a>
+      <a href="{% url 'stations:list' %}" class="btn-polar-dark w-100 justify-content-center"><i class="fas fa-arrow-left me-1"></i>All Stations</a>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block title %}{{ asset.title }}{% endblock %}
+{% block content %}
+
+<section class="pc-page-header">
+  <div class="container">
+    <div class="d-flex gap-2 mb-2 flex-wrap">
+      {% if asset.category %}<span class="pc-card-category">{{ asset.category.name }}</span>{% endif %}
+      <span class="badge-polar badge-new">{{ asset.get_media_type_display }}</span>
+    </div>
+    <h1>{{ asset.title }}</h1>
+    <div class="d-flex gap-3 flex-wrap mt-2" style="color:rgba(255,255,255,0.65);font-size:0.85rem">
+      {% if asset.photographer %}<span><i class="fas fa-camera me-1"></i>{{ asset.photographer }}</span>{% endif %}
+      {% if asset.location %}<span><i class="fas fa-map-marker-alt me-1"></i>{{ asset.location }}</span>{% endif %}
+      {% if asset.taken_date %}<span><i class="fas fa-calendar me-1"></i>{{ asset.taken_date|date:"M Y" }}</span>{% endif %}
+      <span><i class="fas fa-eye me-1"></i>{{ asset.view_count }} views</span>
+    </div>
+  </div>
+</section>
+
+<section class="section-padding bg-light-grey">
+  <div class="container">
+    <div class="row g-4">
+
+      <!-- Main media -->
+      <div class="col-lg-9">
+        {% if asset.image %}
+          <div class="pc-card mb-4" style="overflow:hidden">
+            <img src="{{ asset.image.url }}" alt="{{ asset.title }}"
+                 style="width:100%;max-height:600px;object-fit:contain;background:#000">
+          </div>
+        {% elif asset.embed_url %}
+          {# Could be an Unsplash image URL or YouTube embed #}
+          {% if 'youtube.com' in asset.embed_url or 'youtu.be' in asset.embed_url %}
+            <div class="pc-card mb-4" style="overflow:hidden">
+              <div style="position:relative;padding-bottom:56.25%;height:0">
+                <iframe src="{{ asset.embed_url }}" style="position:absolute;inset:0;width:100%;height:100%"
+                        frameborder="0" allowfullscreen title="{{ asset.title }}"></iframe>
+              </div>
+            </div>
+          {% else %}
+            {# Treat as image URL #}
+            <div class="pc-card mb-4" style="overflow:hidden">
+              <img src="{{ asset.embed_url }}" alt="{{ asset.title }}"
+                   style="width:100%;max-height:600px;object-fit:cover;border-radius:var(--radius)"
+                   onerror="this.src='https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=800&q=70'">
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if asset.description %}
+        <div class="pc-card p-4 mb-4">
+          <p style="line-height:1.9;color:var(--dark-grey);margin:0">{{ asset.description }}</p>
+        </div>
+        {% endif %}
+
+        {% if asset.tag_list %}
+        <div class="d-flex gap-2 flex-wrap mb-4">
+          {% for tag in asset.tag_list %}
+          <span class="badge-polar badge-category"><i class="fas fa-tag me-1" style="font-size:0.65rem"></i>{{ tag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-3">
+        <div class="pc-card p-4 mb-3">
+          <h6 style="color:var(--deep-navy);margin-bottom:1rem"><i class="fas fa-info-circle me-2 text-arctic"></i>Details</h6>
+          <table style="font-size:0.875rem;width:100%">
+            {% if asset.category %}<tr><td style="color:var(--text-muted);padding:0.3rem 0;width:50%">Category</td><td><strong>{{ asset.category.name }}</strong></td></tr>{% endif %}
+            <tr><td style="color:var(--text-muted)">Type</td><td><strong>{{ asset.get_media_type_display }}</strong></td></tr>
+            {% if asset.photographer %}<tr><td style="color:var(--text-muted)">By</td><td><strong>{{ asset.photographer }}</strong></td></tr>{% endif %}
+            {% if asset.location %}<tr><td style="color:var(--text-muted)">Location</td><td><strong>{{ asset.location }}</strong></td></tr>{% endif %}
+            <tr><td style="color:var(--text-muted)">Views</td><td><strong>{{ asset.view_count }}</strong></td></tr>
+          </table>
+        </div>
+
+        <div class="pc-card p-3 d-flex flex-column gap-2 mb-3">
+          {% if asset.allow_download %}
+            {% if asset.image %}
+            <a href="{{ asset.image.url }}" class="btn-polar-primary justify-content-center" download>
+              <i class="fas fa-download me-1"></i> Download
+            </a>
+            {% elif asset.embed_url and 'unsplash' in asset.embed_url %}
+            <a href="{{ asset.embed_url }}" target="_blank" rel="noopener" class="btn-polar-primary justify-content-center">
+              <i class="fas fa-external-link-alt me-1"></i> View Full Size
+            </a>
+            {% endif %}
+          {% endif %}
+          <a href="{% url 'media_gallery:gallery' %}" class="btn-polar-dark justify-content-center">
+            <i class="fas fa-arrow-left me-1"></i> Back to Gallery
+          </a>
+        </div>
+
+        <!-- Related -->
+        {% if related %}
+        <h6 style="color:var(--deep-navy);margin-bottom:0.75rem">Related Media</h6>
+        <div class="row g-2">
+          {% for rel in related %}
+          <div class="col-6">
+            <a href="{% url 'media_gallery:detail' rel.pk %}">
+              {% if rel.image %}
+              <div class="pc-media-item" style="aspect-ratio:1;border-radius:8px;overflow:hidden">
+                <img src="{{ rel.image.url }}" alt="{{ rel.title }}" style="width:100%;height:100%;object-fit:cover">
+              </div>
+              {% elif rel.embed_url %}
+              <div class="pc-media-item" style="aspect-ratio:1;border-radius:8px;overflow:hidden">
+                <img src="{{ rel.embed_url }}" alt="{{ rel.title }}"
+                     style="width:100%;height:100%;object-fit:cover"
+                     onerror="this.src='https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=300&q=60'">
+              </div>
+              {% endif %}
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

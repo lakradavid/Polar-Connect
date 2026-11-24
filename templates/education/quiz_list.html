@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Quizzes{% endblock %}
+{% block content %}
+<section class="pc-page-header"><div class="container"><h1><i class="fas fa-question-circle me-2"></i>Polar Science Quizzes</h1></div></section>
+<section class="section-padding bg-light-grey"><div class="container">
+  <div class="row g-4">
+    {% for quiz in quizzes %}
+    <div class="col-lg-4 col-md-6">
+      <div class="pc-card h-100 p-4 text-center">
+        <div class="pc-feature-icon mx-auto mb-3"><i class="fas fa-question-circle"></i></div>
+        <h5 style="color:var(--deep-navy)">{{ quiz.title }}</h5>
+        <p style="font-size:0.875rem;color:var(--text-muted)">{{ quiz.description|default:quiz.module.description|truncatewords:20 }}</p>
+        <div class="d-flex justify-content-center gap-3 my-3" style="font-size:0.8rem;color:var(--text-muted)">
+          <span><i class="fas fa-list-ol me-1 text-arctic"></i>{{ quiz.total_questions }} questions</span>
+          <span><i class="fas fa-clock me-1 text-arctic"></i>{{ quiz.time_limit_minutes }} min</span>
+          <span><i class="fas fa-trophy me-1 text-arctic"></i>Pass: {{ quiz.passing_score }}%</span>
+        </div>
+        {% if user.is_authenticated %}
+        <a href="{% url 'education:quiz_take' quiz.pk %}" class="btn-polar-primary justify-content-center w-100">Start Quiz <i class="fas fa-arrow-right ms-1"></i></a>
+        {% else %}
+        <a href="{% url 'accounts:login' %}?next={% url 'education:quiz_take' quiz.pk %}" class="btn-polar-outline justify-content-center w-100">Login to Take Quiz</a>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="pc-empty-state"><i class="fas fa-question-circle"></i><h4>No quizzes available yet</h4></div></div>
+    {% endfor %}
+  </div>
+</div></section>
+{% endblock %}

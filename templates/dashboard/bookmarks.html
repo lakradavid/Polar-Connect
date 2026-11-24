@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Bookmarks{% endblock %}
+{% block content %}
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-bookmark me-2"></i>My Bookmarks</h1>
+  </div>
+</section>
+<section class="section-padding bg-light-grey">
+  <div class="container">
+    {% if bookmarks %}
+    <div class="row g-3">
+      {% for bm in bookmarks %}
+      <div class="col-lg-4 col-md-6">
+        <div class="pc-card p-3">
+          <div class="d-flex gap-2 align-items-center">
+            <div style="width:40px;height:40px;border-radius:8px;background:var(--ice-blue);display:flex;align-items:center;justify-content:center;color:var(--arctic-blue);flex-shrink:0">
+              <i class="fas fa-{% if bm.content_type == 'research' %}flask{% elif bm.content_type == 'news' %}newspaper{% elif bm.content_type == 'expedition' %}ship{% else %}database{% endif %}"></i>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;color:var(--arctic-blue);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">{{ bm.get_content_type_display }}</div>
+              <div style="font-size:0.8rem;color:var(--text-muted)">Item #{{ bm.object_id }}</div>
+              <div style="font-size:0.75rem;color:var(--text-muted)">{{ bm.created_at|date:"M d, Y" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="pc-empty-state">
+      <i class="fas fa-bookmark"></i>
+      <h4>No bookmarks yet</h4>
+      <p>Save research papers, resources and news articles here for quick access.</p>
+      <a href="{% url 'repository:list' %}" class="btn-polar-primary mt-2">Browse Repository</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

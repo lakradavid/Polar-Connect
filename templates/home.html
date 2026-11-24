@@ -1,0 +1,544 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+{% block meta_description %}PolarConnect – India's national portal for polar science outreach, research, expeditions and education. Discover the frozen frontiers.{% endblock %}
+
+{% block content %}
+
+<!-- ===================== HERO ===================== -->
+<section class="pc-hero">
+  <div class="pc-hero-bg"></div>
+  <div class="pc-hero-aurora"></div>
+  <div class="container pc-hero-content">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <div class="pc-hero-badge">
+          <i class="fas fa-snowflake"></i>
+          Ministry of Earth Sciences, Government of India
+        </div>
+        <h1 class="pc-hero-title">
+          Discover the <span class="highlight">Frozen Frontiers.</span><br>
+          Explore the Science of Our Poles.
+        </h1>
+        <p class="pc-hero-subtitle">
+          Connecting people, research and knowledge to advance understanding of Earth's Polar Regions. India's integrated polar science outreach and knowledge dissemination platform.
+        </p>
+        <div class="pc-hero-actions">
+          <a href="{% url 'education:modules' %}" class="btn-hero-primary">
+            <i class="fas fa-graduation-cap"></i> Explore Polar Science
+          </a>
+          <a href="{% url 'research:list' %}" class="btn-hero-outline">
+            <i class="fas fa-flask"></i> Discover Research
+          </a>
+          <a href="{% url 'accounts:register' %}" class="btn-hero-outline">
+            <i class="fas fa-users"></i> Join the Community
+          </a>
+        </div>
+        <div class="pc-hero-stats">
+          <div class="pc-hero-stat">
+            <span class="pc-hero-stat-num" data-target="{{ stats.research }}">{{ stats.research }}</span>
+            <span class="pc-hero-stat-label">Research Papers</span>
+          </div>
+          <div class="pc-hero-stat">
+            <span class="pc-hero-stat-num" data-target="{{ stats.resources }}">{{ stats.resources }}</span>
+            <span class="pc-hero-stat-label">Resources</span>
+          </div>
+          <div class="pc-hero-stat">
+            <span class="pc-hero-stat-num" data-target="{{ stats.expeditions }}">{{ stats.expeditions }}</span>
+            <span class="pc-hero-stat-label">Expeditions</span>
+          </div>
+          <div class="pc-hero-stat">
+            <span class="pc-hero-stat-num" data-target="{{ stats.users }}">{{ stats.users }}</span>
+            <span class="pc-hero-stat-label">Members</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 d-none d-lg-block text-center">
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(40,199,232,0.2);border-radius:20px;padding:1.75rem;backdrop-filter:blur(10px);max-width:380px;margin:0 auto">
+          <i class="fas fa-globe" style="font-size:3.5rem;color:var(--cyan);display:block;margin-bottom:1rem"></i>
+          <h3 style="color:white;font-size:1.1rem;margin-bottom:1rem">India's Polar Research Legacy</h3>
+          <div class="row g-2 text-start">
+            {% for feat in hero_features %}
+            <div class="col-6">
+              <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:0.6rem;border:1px solid rgba(255,255,255,0.08)">
+                <i class="{{ feat.icon }}" style="color:var(--cyan);font-size:1.1rem;display:block;margin-bottom:0.2rem"></i>
+                <div style="color:rgba(255,255,255,0.9);font-size:0.72rem;font-weight:600;line-height:1.3">{{ feat.title }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pc-scroll-indicator">
+    <i class="fas fa-chevron-down"></i>
+    <span>Scroll to Explore</span>
+  </div>
+</section>
+
+<!-- ===================== ABOUT POLAR SCIENCE ===================== -->
+<section class="pc-polar-about section-padding">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div class="section-eyebrow" style="color:var(--cyan)">
+          <span style="background:var(--cyan)"></span>
+          About Polar Science
+          <span style="background:var(--cyan)"></span>
+        </div>
+        <h2 class="section-title" style="color:white">Why Polar Regions Matter to All of Us</h2>
+        <p style="color:rgba(255,255,255,0.75);line-height:1.8;font-size:1rem;margin-bottom:1.5rem">
+          Earth's polar regions — the Arctic in the north and Antarctica in the south — are not remote, irrelevant wilderness. They are the planet's climate regulators, housing 90% of its fresh water and influencing global weather patterns, sea levels and biodiversity.
+        </p>
+        <p style="color:rgba(255,255,255,0.65);line-height:1.8;font-size:0.95rem;margin-bottom:2rem">
+          India has maintained an active presence in Antarctic research since 1981, operating Maitri and Bharati stations and contributing decades of scientific data to the global understanding of polar dynamics, climate change and oceanography.
+        </p>
+        <div class="d-flex gap-2 flex-wrap">
+          <a href="{% url 'expeditions:list' %}" class="btn-polar-cyan">
+            <i class="fas fa-ship"></i> Explore Expeditions
+          </a>
+          <a href="{% url 'stations:map' %}" class="btn-hero-outline" style="font-size:0.875rem;padding:0.65rem 1.5rem">
+            <i class="fas fa-map"></i> View Polar Map
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="pc-about-stat">
+              <div class="pc-about-stat-num">1981</div>
+              <div class="pc-about-stat-label">India's First Antarctic Expedition</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="pc-about-stat">
+              <div class="pc-about-stat-num">43+</div>
+              <div class="pc-about-stat-label">Indian Antarctic Expeditions</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="pc-about-stat">
+              <div class="pc-about-stat-num">2</div>
+              <div class="pc-about-stat-label">Active Research Stations</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="pc-about-stat">
+              <div class="pc-about-stat-num">90%</div>
+              <div class="pc-about-stat-label">World's Freshwater in Ice</div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="pc-about-stat">
+              <div style="display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
+                <div>
+                  <div class="pc-about-stat-num">14M km²</div>
+                  <div class="pc-about-stat-label">Antarctic Continent Area</div>
+                </div>
+                <div style="color:rgba(255,255,255,0.2);font-size:1.5rem">|</div>
+                <div>
+                  <div class="pc-about-stat-num">-89.2°C</div>
+                  <div class="pc-about-stat-label">Lowest Recorded Temperature</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURES ===================== -->
+<section class="section-padding bg-light-grey">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">What We Offer</div>
+      <h2 class="section-title">A Unified Knowledge Ecosystem</h2>
+      <p class="section-subtitle">From research archives to interactive learning, PolarConnect brings the science of the poles to every Indian citizen.</p>
+    </div>
+    <div class="row g-4">
+      {% for feature in platform_features %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="pc-feature-card">
+          <div class="pc-feature-icon"><i class="{{ feature.icon }}"></i></div>
+          <h4>{{ feature.title }}</h4>
+          <p>{{ feature.description }}</p>
+          <a href="{{ feature.url }}" class="btn-polar-outline mt-3" style="font-size:0.8rem;padding:0.4rem 1rem">
+            Explore <i class="fas fa-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LATEST RESEARCH ===================== -->
+<section class="section-padding">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+      <div>
+        <div class="section-eyebrow">Scientific Knowledge</div>
+        <h2 class="section-title mb-0">Latest Research Publications</h2>
+      </div>
+      <a href="{% url 'research:list' %}" class="btn-polar-outline">
+        View All Research <i class="fas fa-arrow-right ms-1"></i>
+      </a>
+    </div>
+    <div class="row g-4">
+      {% for paper in latest_research %}
+      <div class="col-lg-4 col-md-6">
+        <div class="pc-card h-100">
+          <div class="pc-card-body d-flex flex-column">
+            <span class="pc-card-category">{{ paper.get_category_display }}</span>
+            <h5 class="pc-card-title"><a href="{% url 'research:detail' paper.pk %}">{{ paper.title }}</a></h5>
+            <p class="pc-card-text flex-grow-1">{{ paper.abstract|truncatewords:28 }}</p>
+            <div class="pc-card-meta mt-auto pt-3 border-top">
+              <span><i class="fas fa-user-circle"></i> {{ paper.authors|truncatechars:30 }}</span>
+              {% if paper.publication_year %}
+              <span><i class="fas fa-calendar"></i> {{ paper.publication_year }}</span>
+              {% endif %}
+              <span class="badge-polar badge-approved">Approved</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="pc-empty-state">
+          <i class="fas fa-flask"></i>
+          <h4>Research publications coming soon</h4>
+          <p class="text-muted">Be the first to contribute by uploading a research paper.</p>
+          {% if user.is_authenticated %}
+          <a href="{% url 'research:upload' %}" class="btn-polar-primary mt-2">Upload Research</a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EXPEDITIONS ===================== -->
+<section class="section-padding bg-gradient-ocean">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+      <div>
+        <div class="section-eyebrow" style="color:var(--cyan)">
+          <span style="background:var(--cyan)"></span>Polar Expeditions<span style="background:var(--cyan)"></span>
+        </div>
+        <h2 class="section-title" style="color:white;margin:0">India's Polar Expedition History</h2>
+      </div>
+      <a href="{% url 'expeditions:list' %}" class="btn-polar-cyan">
+        All Expeditions <i class="fas fa-arrow-right ms-1"></i>
+      </a>
+    </div>
+    <div class="row g-3">
+      {% for exp in featured_expeditions %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <a href="{% url 'expeditions:detail' exp.slug %}" class="text-decoration-none">
+          <div class="pc-expedition-card">
+            {% if exp.cover_image %}
+              <img src="{{ exp.cover_image.url }}" alt="{{ exp.name }}">
+            {% elif exp.fallback_image %}
+              <img src="{{ exp.fallback_image }}" alt="{{ exp.name }}"
+                   onerror="this.src='https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=600&q=60'">
+            {% else %}
+              <img src="https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=600&q=75" alt="{{ exp.name }}">
+            {% endif %}
+            <div class="pc-expedition-overlay">
+              {% if exp.is_demo_data %}
+              <span class="badge-polar badge-demo mb-1"><i class="fas fa-info-circle me-1"></i>Demo Data</span>
+              {% endif %}
+              <div style="color:var(--cyan);font-size:0.75rem;font-weight:600;letter-spacing:1px">{{ exp.get_region_display }}</div>
+              <h5 style="color:white;font-size:0.95rem;margin:0.3rem 0 0.5rem">{{ exp.name }}</h5>
+              <div style="color:rgba(255,255,255,0.7);font-size:0.8rem"><i class="fas fa-calendar me-1"></i>{{ exp.expedition_year }}</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center py-4">
+        <i class="fas fa-ship" style="font-size:3rem;color:rgba(255,255,255,0.2);margin-bottom:1rem;display:block"></i>
+        <p style="color:rgba(255,255,255,0.5)">Expedition records will appear here.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EDUCATION ===================== -->
+<section class="section-padding bg-ice">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+      <div>
+        <div class="section-eyebrow">Learning Centre</div>
+        <h2 class="section-title mb-0">Polar Science Learning Modules</h2>
+      </div>
+      <a href="{% url 'education:modules' %}" class="btn-polar-primary">
+        Start Learning <i class="fas fa-arrow-right ms-1"></i>
+      </a>
+    </div>
+    <div class="row g-4">
+      {% for category in learning_categories %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <a href="{% url 'education:category' category.slug %}" class="text-decoration-none">
+          <div class="pc-feature-card">
+            <div class="pc-feature-icon"><i class="{{ category.icon|default:'fas fa-book' }}"></i></div>
+            <h4>{{ category.name }}</h4>
+            <p>{{ category.description|truncatewords:12 }}</p>
+            <div class="mt-2" style="font-size:0.8rem;color:var(--arctic-blue);font-weight:600">
+              {{ category.modules.count }} module{{ category.modules.count|pluralize }} &rarr;
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      {% for lcat in default_learning_categories %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="pc-feature-card">
+          <div class="pc-feature-icon"><i class="{{ lcat.icon }}"></i></div>
+          <h4>{{ lcat.name }}</h4>
+          <p>{{ lcat.desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PHOTO GALLERY ===================== -->
+<section class="section-padding">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+      <div>
+        <div class="section-eyebrow">Media Gallery</div>
+        <h2 class="section-title mb-0">Polar Photography & Media</h2>
+      </div>
+      <a href="{% url 'media_gallery:gallery' %}" class="btn-polar-outline">
+        Full Gallery <i class="fas fa-images ms-1"></i>
+      </a>
+    </div>
+    <div class="pc-gallery-grid">
+      {% for asset in gallery_items %}
+      <div class="pc-gallery-item" data-lightbox
+           data-src="{% if asset.image %}{{ asset.image.url }}{% elif asset.embed_url %}{{ asset.embed_url }}{% else %}https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=800{% endif %}"
+           data-caption="{{ asset.title }}">
+        {% if asset.image %}
+          <img src="{{ asset.image.url }}" alt="{{ asset.title }}" loading="lazy">
+        {% elif asset.embed_url %}
+          <img src="{{ asset.embed_url }}" alt="{{ asset.title }}" loading="lazy"
+               onerror="this.src='https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=600&q=60'">
+        {% else %}
+          <img src="https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=600&q=75" alt="{{ asset.title }}">
+        {% endif %}
+        <div class="pc-gallery-overlay"><i class="fas fa-expand"></i></div>
+      </div>
+      {% empty %}
+      {% for placeholder in gallery_placeholders %}
+      <div class="pc-gallery-item" data-lightbox
+           data-src="{{ placeholder.src }}" data-caption="{{ placeholder.caption }}">
+        <img src="{{ placeholder.src }}" alt="{{ placeholder.caption }}" loading="lazy">
+        <div class="pc-gallery-overlay"><i class="fas fa-expand"></i></div>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NEWS + EVENTS ===================== -->
+<section class="section-padding bg-light-grey">
+  <div class="container">
+    <div class="row g-5">
+      <!-- News -->
+      <div class="col-lg-7">
+        <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+          <div>
+            <div class="section-eyebrow">Latest Updates</div>
+            <h2 class="section-title mb-0">News & Announcements</h2>
+          </div>
+          <a href="{% url 'news:list' %}" class="btn-polar-outline" style="font-size:0.8rem;padding:0.4rem 1rem">View All</a>
+        </div>
+        {% for article in latest_news %}
+        <a href="{% url 'news:detail' article.slug %}" class="text-decoration-none d-block mb-3">
+          <div class="pc-card d-flex flex-row align-items-stretch" style="overflow:hidden">
+            <div style="width:120px;min-width:120px;overflow:hidden;flex-shrink:0">
+              {% if article.featured_image %}
+                <img src="{{ article.featured_image.url }}" alt="{{ article.title }}" style="width:100%;height:100%;min-height:90px;object-fit:cover">
+              {% else %}
+                {% with cat=article.category.slug|default:'' %}
+                {% if 'expedition' in cat %}
+                  <img src="https://images.unsplash.com/photo-1519832979-6fa011b87667?w=220&q=70" alt="" style="width:100%;height:100%;min-height:90px;object-fit:cover">
+                {% elif 'climate' in cat %}
+                  <img src="https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=220&q=70" alt="" style="width:100%;height:100%;min-height:90px;object-fit:cover">
+                {% elif 'technology' in cat %}
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=220&q=70" alt="" style="width:100%;height:100%;min-height:90px;object-fit:cover">
+                {% else %}
+                  <img src="https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=220&q=70" alt="" style="width:100%;height:100%;min-height:90px;object-fit:cover">
+                {% endif %}
+                {% endwith %}
+              {% endif %}
+            </div>
+            <div class="p-3 flex-grow-1">
+              {% if article.category %}<span class="pc-card-category" style="font-size:0.65rem;margin-bottom:0.3rem">{{ article.category.name }}</span>{% endif %}
+              <h6 style="color:var(--deep-navy);font-size:0.875rem;margin:0.2rem 0 0.4rem;line-height:1.4">{{ article.title|truncatechars:70 }}</h6>
+              <div style="font-size:0.75rem;color:var(--text-muted)">
+                {% if article.published_at %}<span><i class="fas fa-calendar me-1" style="color:var(--arctic-blue)"></i>{{ article.published_at|date:"M d, Y" }}</span>{% endif %}
+              </div>
+            </div>
+          </div>
+        </a>
+        {% empty %}
+        <div class="pc-empty-state">
+          <i class="fas fa-newspaper"></i>
+          <h5>News articles coming soon</h5>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Events -->
+      <div class="col-lg-5">
+        <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+          <div>
+            <div class="section-eyebrow">Calendar</div>
+            <h2 class="section-title mb-0">Upcoming Events</h2>
+          </div>
+          <a href="{% url 'news:events' %}" class="btn-polar-outline" style="font-size:0.8rem;padding:0.4rem 1rem">View All</a>
+        </div>
+        {% for event in upcoming_events %}
+        <a href="{% url 'news:event_detail' event.slug %}" class="text-decoration-none">
+          <div class="pc-event-item">
+            <div class="pc-event-date">
+              <div class="pc-event-day">{{ event.start_datetime|date:"d" }}</div>
+              <div class="pc-event-month">{{ event.start_datetime|date:"M" }}</div>
+            </div>
+            <div class="pc-event-info">
+              <h6>{{ event.title }}</h6>
+              <p><i class="fas fa-tag me-1"></i>{{ event.get_event_type_display }}
+                {% if event.is_online %} · <i class="fas fa-video ms-1"></i> Online{% endif %}</p>
+              {% if event.organizer %}<p class="mt-1"><i class="fas fa-building me-1"></i>{{ event.organizer }}</p>{% endif %}
+            </div>
+          </div>
+        </a>
+        {% empty %}
+        <div class="text-center py-4">
+          <i class="fas fa-calendar-times" style="font-size:2.5rem;color:var(--border-color);display:block;margin-bottom:0.75rem"></i>
+          <p class="text-muted" style="font-size:0.875rem">No upcoming events scheduled.</p>
+          <a href="{% url 'news:events' %}" class="btn-polar-outline" style="font-size:0.8rem;padding:0.4rem 1rem">View Past Events</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== POLAR MAP PREVIEW ===================== -->
+<section class="section-padding bg-dark-navy">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow" style="color:var(--cyan)">
+        <span style="background:var(--cyan)"></span>Interactive Map<span style="background:var(--cyan)"></span>
+      </div>
+      <h2 class="section-title" style="color:white">Explore Polar Research Locations</h2>
+      <p class="section-subtitle" style="color:rgba(255,255,255,0.65)">
+        Discover Indian and international research stations, expedition sites and geographic landmarks across Antarctica and the Arctic.
+      </p>
+    </div>
+    <div id="polar-map"></div>
+    <div class="text-center mt-3">
+      <div class="d-flex justify-content-center gap-2 flex-wrap mb-3">
+        <button onclick="window._pcSwitchTiles('street')"
+                class="btn-polar-cyan" style="font-size:0.75rem;padding:0.3rem 0.9rem;border:none;cursor:pointer">
+          <i class="fas fa-map me-1"></i> ESRI Street
+        </button>
+        <button onclick="window._pcSwitchTiles('gray')"
+                class="btn-polar-dark" style="font-size:0.75rem;padding:0.3rem 0.9rem;border:none;cursor:pointer">
+          <i class="fas fa-layer-group me-1"></i> ESRI Gray
+        </button>
+      </div>
+      <a href="{% url 'stations:map' %}" class="btn-polar-cyan">
+        <i class="fas fa-expand-alt me-1"></i> Open Full Interactive Map
+      </a>
+      <small class="d-block mt-2" style="color:rgba(255,255,255,0.4);font-size:0.75rem">
+        <i class="fas fa-info-circle me-1"></i> 35+ polar hotspots — click any marker. Station coordinates are for demonstration.
+      </small>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KNOWLEDGE REPOSITORY ===================== -->
+<section class="section-padding">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+      <div>
+        <div class="section-eyebrow">Knowledge Repository</div>
+        <h2 class="section-title mb-0">Scientific Documents & Reports</h2>
+      </div>
+      <a href="{% url 'repository:list' %}" class="btn-polar-primary">
+        Browse Repository <i class="fas fa-database ms-1"></i>
+      </a>
+    </div>
+    <div class="row g-4">
+      {% for resource in featured_resources %}
+      <div class="col-lg-4 col-md-6">
+        <div class="pc-research-card">
+          <div class="pc-research-card-icon">
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <div class="flex-grow-1">
+            <span class="pc-card-category d-inline-block mb-1">{{ resource.get_category_display }}</span>
+            <h6 class="pc-card-title" style="font-size:0.9rem"><a href="{% url 'repository:detail' resource.pk %}">{{ resource.title }}</a></h6>
+            <div class="pc-card-meta">
+              <span><i class="fas fa-user"></i> {{ resource.author|truncatechars:20 }}</span>
+              {% if resource.publication_date %}<span><i class="fas fa-calendar"></i> {{ resource.publication_date|date:"Y" }}</span>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="pc-empty-state">
+          <i class="fas fa-database"></i>
+          <h4>Repository resources coming soon</h4>
+          <p>Scientific documents and reports will be listed here.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMMUNITY CTA ===================== -->
+<section class="section-padding" style="background:linear-gradient(135deg,var(--arctic-blue),var(--cyan))">
+  <div class="container text-center">
+    <i class="fas fa-users" style="font-size:3.5rem;color:rgba(255,255,255,0.3);margin-bottom:1rem;display:block"></i>
+    <h2 style="color:white;font-weight:800;margin-bottom:0.75rem">Join India's Polar Science Community</h2>
+    <p style="color:rgba(255,255,255,0.85);max-width:550px;margin:0 auto 2rem;font-size:1.05rem;line-height:1.7">
+      Connect with researchers, educators and students. Ask questions, share discoveries and advance the frontiers of polar science together.
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      {% if not user.is_authenticated %}
+      <a href="{% url 'accounts:register' %}" style="background:white;color:var(--arctic-blue);font-weight:700;padding:0.85rem 2rem;border-radius:50px;font-size:0.95rem;display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.3s">
+        <i class="fas fa-user-plus"></i> Create Free Account
+      </a>
+      {% endif %}
+      <a href="{% url 'community:forum' %}" style="background:transparent;color:white;font-weight:600;padding:0.85rem 2rem;border-radius:50px;font-size:0.95rem;border:2px solid rgba(255,255,255,0.6);display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.3s">
+        <i class="fas fa-comments"></i> Visit Forum
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Pass stations from Django to map JS
+window.PC_MAP_STATIONS = {{ map_stations_json|safe }};
+</script>
+{% endblock %}

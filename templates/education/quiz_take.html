@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}{{ quiz.title }}{% endblock %}
+{% block content %}
+<section class="pc-page-header"><div class="container"><h1><i class="fas fa-question-circle me-2"></i>{{ quiz.title }}</h1>
+<div style="color:rgba(255,255,255,0.65);font-size:0.85rem;margin-top:0.5rem">
+  <span><i class="fas fa-list-ol me-1"></i>{{ questions.count }} questions</span> &bull;
+  <span><i class="fas fa-clock me-1"></i>{{ quiz.time_limit_minutes }} minutes</span> &bull;
+  <span><i class="fas fa-trophy me-1"></i>Pass at {{ quiz.passing_score }}%</span>
+</div></div></section>
+<section class="section-padding bg-light-grey"><div class="container" style="max-width:720px">
+  <div class="pc-quiz-progress-bar"><div class="pc-quiz-progress-fill" id="quizProgressFill" style="width:0%"></div></div>
+  <div style="font-size:0.8rem;color:var(--text-muted);text-align:right;margin-bottom:1.5rem" id="quizProgressText">Question 1 of {{ questions.count }}</div>
+  <form method="post" id="quizForm">{% csrf_token %}
+    {% for question in questions %}
+    <div class="pc-quiz-question pc-card p-4 {% if not forloop.first %}d-none{% endif %}" id="q-{{ forloop.counter }}">
+      <h5 style="color:var(--deep-navy);margin-bottom:1.5rem">{{ forloop.counter }}. {{ question.question_text }}</h5>
+      <div class="pc-quiz-option" data-answer="A">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ice-blue);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--arctic-blue);flex-shrink:0">A</div>
+        <span>{{ question.option_a }}</span>
+        <input type="radio" name="q_{{ question.pk }}" value="A" style="display:none">
+      </div>
+      <div class="pc-quiz-option" data-answer="B">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ice-blue);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--arctic-blue);flex-shrink:0">B</div>
+        <span>{{ question.option_b }}</span>
+        <input type="radio" name="q_{{ question.pk }}" value="B" style="display:none">
+      </div>
+      <div class="pc-quiz-option" data-answer="C">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ice-blue);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--arctic-blue);flex-shrink:0">C</div>
+        <span>{{ question.option_c }}</span>
+        <input type="radio" name="q_{{ question.pk }}" value="C" style="display:none">
+      </div>
+      <div class="pc-quiz-option" data-answer="D">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ice-blue);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--arctic-blue);flex-shrink:0">D</div>
+        <span>{{ question.option_d }}</span>
+        <input type="radio" name="q_{{ question.pk }}" value="D" style="display:none">
+      </div>
+    </div>
+    {% endfor %}
+    <div class="mt-4 d-flex justify-content-between align-items-center">
+      <a href="{% url 'education:quizzes' %}" class="btn-polar-outline">Exit Quiz</a>
+      <button type="button" id="quizNext" class="btn-polar-primary">Next <i class="fas fa-arrow-right ms-1"></i></button>
+    </div>
+  </form>
+</div></section>
+{% endblock %}

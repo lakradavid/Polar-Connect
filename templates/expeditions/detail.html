@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% block title %}{{ expedition.name }}{% endblock %}
+
+{% block content %}
+
+<section class="pc-page-header">
+  <div class="container">
+    <div class="d-flex gap-2 flex-wrap mb-2">
+      <span class="pc-card-category">{{ expedition.get_region_display }}</span>
+      <span class="badge-polar badge-new">{{ expedition.expedition_year }}</span>
+      {% if expedition.is_demo_data %}
+        <span class="badge-polar badge-demo"><i class="fas fa-info-circle me-1"></i>Demonstration Data</span>
+      {% endif %}
+    </div>
+    <h1>{{ expedition.name }}</h1>
+    <div class="d-flex gap-3 flex-wrap mt-2" style="color:rgba(255,255,255,0.65);font-size:0.85rem">
+      <span><i class="fas fa-calendar me-1"></i>{{ expedition.expedition_year }}</span>
+      <span><i class="fas fa-map-marker-alt me-1"></i>{{ expedition.location }}</span>
+      {% if expedition.chief_scientist %}
+        <span><i class="fas fa-user-tie me-1"></i>{{ expedition.chief_scientist }}</span>
+      {% endif %}
+      {% if expedition.team_size %}
+        <span><i class="fas fa-users me-1"></i>{{ expedition.team_size }} members</span>
+      {% endif %}
+      {% if expedition.duration_days %}
+        <span><i class="fas fa-hourglass-half me-1"></i>{{ expedition.duration_days }} days</span>
+      {% endif %}
+    </div>
+    <nav aria-label="breadcrumb" class="mt-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'expeditions:list' %}">Expeditions</a></li>
+        <li class="breadcrumb-item active">{{ expedition.name }}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="section-padding bg-light-grey">
+  <div class="container">
+
+    {% if expedition.is_demo_data %}
+    <div class="alert-polar-info mb-4">
+      <i class="fas fa-info-circle"></i>
+      This expedition record contains <strong>demonstration data</strong> created for educational purposes.
+      It is not a verified official record. Please refer to
+      <a href="https://www.ncpor.res.in" target="_blank" rel="noopener" style="color:var(--arctic-blue)">NCPOR</a>
+      for authoritative expedition information.
+    </div>
+    {% endif %}
+
+    <div class="row g-4">
+
+      <!-- Left: main content -->
+      <div class="col-lg-8">
+
+        <!-- Hero image -->
+        <div class="pc-card mb-4" style="overflow:hidden;border-radius:var(--radius-lg)">
+          {% if expedition.cover_image %}
+            <img src="{{ expedition.cover_image.url }}"
+                 alt="{{ expedition.name }}"
+                 style="width:100%;height:380px;object-fit:cover">
+          {% else %}
+            <img src="{{ expedition.fallback_image }}"
+                 alt="{{ expedition.name }}"
+                 style="width:100%;height:380px;object-fit:cover"
+                 onerror="this.src='https://images.unsplash.com/photo-1517783999520-f068d7431a60?w=900&q=70'">
+          {% endif %}
+        </div>
+
+        <!-- Objectives -->
+        <div class="pc-card p-4 mb-4">
+          <h4 style="color:var(--deep-navy);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
+            <i class="fas fa-bullseye text-arctic"></i> Research Objectives
+          </h4>
+          <p style="line-height:1.9;color:var(--dark-grey);margin:0">{{ expedition.objectives }}</p>
+        </div>
+
+        <!-- Findings -->
+        {% if expedition.findings %}
+        <div class="pc-card p-4 mb-4">
+          <h4 style="color:var(--deep-navy);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
+            <i class="fas fa-lightbulb text-arctic"></i> Scientific Findings
+          </h4>
+          <p style="line-height:1.9;color:var(--dark-grey);margin:0">{{ expedition.findings }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Photos -->
+        {% with photos=expedition.photos.all %}
+        {% if photos %}
+        <h5 style="color:var(--deep-navy);margin-bottom:1rem">
+          <i class="fas fa-images me-2 text-arctic"></i>Expedition Photos
+        </h5>
+        <div class="pc-media-grid mb-4">
+          {% for photo in photos %}
+          <div class="pc-media-item" data-lightbox
+               data-src="{{ photo.image.url }}"
+               data-caption="{{ photo.caption }}">
+            <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" loading="lazy">
+            <div class="pc-media-overlay">
+              <h6>{{ photo.caption }}</h6>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+      </div>
+
+      <!-- Right: sidebar -->
+      <div class="col-lg-4">
+
+        <!-- Key details card -->
+        <div class="pc-card p-4 mb-3">
+          <h6 style="color:var(--deep-navy);margin-bottom:1.25rem;font-size:1rem">
+            <i class="fas fa-info-circle me-2 text-arctic"></i>Expedition Details
+          </h6>
+          <table style="font-size:0.875rem;width:100%;border-collapse:collapse">
+            <tr style="border-bottom:1px solid var(--border-color)">
+              <td style="color:var(--text-muted);padding:0.5rem 0;width:45%">Year</td>
+              <td style="font-weight:600;color:var(--deep-navy)">{{ expedition.expedition_year }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-color)">
+              <td style="color:var(--text-muted);padding:0.5rem 0">Region</td>
+              <td style="font-weight:600;color:var(--deep-navy)">{{ expedition.get_region_display }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-color)">
+              <td style="color:var(--text-muted);padding:0.5rem 0">Location</td>
+              <td style="font-weight:600;color:var(--deep-navy)">{{ expedition.location }}</td>
+            </tr>
+            {% if expedition.chief_scientist %}
+            <tr style="border-bottom:1px solid var(--border-color)">
+              <td style="color:var(--text-muted);padding:0.5rem 0">Chief Scientist</td>
+              <td style="font-weight:600;color:var(--deep-navy)">{{ expedition.chief_scientist }}</td>
+            </tr>
+            {% endif %}
+            {% if expedition.team_size %}
+            <tr style="border-bottom:1px solid var(--border-color)">
+              <td style="color:var(--text-muted);padding:0.5rem 0">Team Size</td>
+              <td style="font-weight:600;color:var(--deep-navy)">{{ expedition.team_size }} members</td>
+            </tr>
+            {% endif %}
+            {% if expedition.duration_days %}
+            <tr>
+              <td style="color:var(--text-muted);padding:0.5rem 0">Duration</td>
+              <td style="font-weight:600;color:var(--deep-navy)">{{ expedition.duration_days }} days</td>
+            </tr>
+            {% endif %}
+          </table>
+        </div>
+
+        <!-- Participating institutions -->
+        {% if expedition.institution_list %}
+        <div class="pc-card p-4 mb-3">
+          <h6 style="color:var(--deep-navy);margin-bottom:1rem;font-size:1rem">
+            <i class="fas fa-university me-2 text-arctic"></i>Participating Institutions
+          </h6>
+          <ul style="list-style:none;padding:0;margin:0">
+            {% for inst in expedition.institution_list %}
+            <li style="padding:0.4rem 0;border-bottom:1px solid var(--border-color);font-size:0.875rem;
+                       display:flex;align-items:flex-start;gap:0.5rem;color:var(--dark-grey)">
+              <i class="fas fa-building text-arctic" style="font-size:0.75rem;margin-top:0.2rem;flex-shrink:0"></i>
+              {{ inst }}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <!-- Documents -->
+        {% if expedition.documents.all %}
+        <div class="pc-card p-4 mb-3">
+          <h6 style="color:var(--deep-navy);margin-bottom:0.75rem;font-size:1rem">
+            <i class="fas fa-file-alt me-2 text-arctic"></i>Reports & Documents
+          </h6>
+          {% for doc in expedition.documents.all %}
+          <a href="{{ doc.document.url }}" download
+             class="btn-polar-outline d-flex justify-content-center mb-2" style="font-size:0.8rem">
+            <i class="fas fa-download me-1"></i> {{ doc.title }}
+          </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Action buttons -->
+        <div class="d-flex flex-column gap-2">
+          <a href="{% url 'expeditions:list' %}" class="btn-polar-dark justify-content-center">
+            <i class="fas fa-arrow-left me-1"></i> All Expeditions
+          </a>
+          <a href="{% url 'stations:map' %}" class="btn-polar-outline justify-content-center">
+            <i class="fas fa-map-marked-alt me-1"></i> View on Polar Map
+          </a>
+          <a href="{% url 'research:list' %}" class="btn-polar-outline justify-content-center">
+            <i class="fas fa-flask me-1"></i> Related Research
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

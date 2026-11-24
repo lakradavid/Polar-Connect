@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}Interactive Polar Map{% endblock %}
+
+{% block content %}
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-map-marked-alt me-2"></i>Interactive Polar Map</h1>
+    <p style="color:rgba(255,255,255,0.75)">35+ polar research stations, climate hotspots, wildlife zones and historic sites</p>
+    <div class="alert-polar-info mt-2" style="display:inline-flex;font-size:0.78rem">
+      <i class="fas fa-info-circle"></i>&nbsp;
+      Coordinates are indicative. Verify station locations from official
+      <a href="https://www.ncpor.res.in" target="_blank" rel="noopener" style="color:var(--arctic-blue)">NCPOR</a> sources.
+    </div>
+  </div>
+</section>
+
+<section class="section-padding bg-dark-navy">
+  <div class="container">
+
+    <!-- Legend + tile switcher -->
+    <div class="d-flex flex-wrap gap-3 align-items-start justify-content-between mb-3">
+      <!-- Legend -->
+      <div class="d-flex flex-wrap gap-x-3 gap-2 align-items-center" style="font-size:0.78rem;color:rgba(255,255,255,0.8)">
+        <span style="font-weight:700;color:var(--cyan);margin-right:4px">Legend:</span>
+        <span><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#28C7E8;border:2px solid white;vertical-align:middle;margin-right:3px"></span>Indian Station</span>
+        <span><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#1769AA;border:2px solid white;vertical-align:middle;margin-right:3px"></span>Int'l Station</span>
+        <span><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#27AE60;border:2px solid white;vertical-align:middle;margin-right:3px"></span>Wildlife Zone</span>
+        <span><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#E74C3C;border:2px solid white;vertical-align:middle;margin-right:3px"></span>Climate Hotspot</span>
+        <span><span style="display:inline-block;width:9px;height:9px;background:#F39C12;transform:rotate(45deg);vertical-align:middle;margin-right:3px"></span>Geographic Feature</span>
+        <span><span style="display:inline-block;width:9px;height:9px;background:#E67E22;transform:rotate(45deg);vertical-align:middle;margin-right:3px"></span>Historic Site</span>
+      </div>
+      <!-- Tile switcher -->
+      <div class="d-flex gap-2 align-items-center" style="font-size:0.75rem;color:rgba(255,255,255,0.65)">
+        <span>Base map:</span>
+        <button onclick="window._pcSwitchTiles('street')"
+                class="btn-polar-cyan" style="font-size:0.72rem;padding:0.22rem 0.75rem;border:none;cursor:pointer">
+          <i class="fas fa-map me-1"></i>ESRI Street
+        </button>
+        <button onclick="window._pcSwitchTiles('gray')"
+                class="btn-polar-dark" style="font-size:0.72rem;padding:0.22rem 0.75rem;border:none;cursor:pointer">
+          <i class="fas fa-layer-group me-1"></i>ESRI Gray
+        </button>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div id="polar-map" style="height:620px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid rgba(40,199,232,0.2)"></div>
+
+    <!-- Hotspot count note -->
+    <p class="mt-2 text-center" style="font-size:0.75rem;color:rgba(255,255,255,0.4)">
+      <i class="fas fa-map-marker-alt me-1" style="color:var(--cyan)"></i>
+      35+ hotspots — hover or click any marker for details. Use the layer control (top-right of map) to switch between ESRI Street and ESRI Gray.
+    </p>
+
+    <!-- DB stations list -->
+    {% if stations %}
+    <div class="mt-5">
+      <h5 style="color:white;margin-bottom:1rem">
+        <i class="fas fa-list me-2 text-arctic"></i>Research Stations in Database
+      </h5>
+      <div class="row g-3">
+        {% for station in stations %}
+        <div class="col-lg-4 col-md-6">
+          <a href="{% url 'stations:detail' station.slug %}" class="text-decoration-none">
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+                        border-radius:var(--radius);padding:1rem;transition:all 0.25s"
+                 onmouseover="this.style.borderColor='rgba(40,199,232,0.4)';this.style.background='rgba(40,199,232,0.06)'"
+                 onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.background='rgba(255,255,255,0.05)'">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <h6 style="color:white;font-size:0.875rem;margin:0;line-height:1.3">{{ station.name }}</h6>
+                {% if station.is_demo_data %}<span class="badge-polar badge-demo" style="flex-shrink:0;margin-left:6px">Demo</span>{% endif %}
+              </div>
+              <p style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin:0.4rem 0 0.5rem;line-height:1.5">
+                {{ station.description|truncatewords:16 }}
+              </p>
+              <div class="d-flex gap-3 flex-wrap" style="font-size:0.72rem;color:rgba(255,255,255,0.45)">
+                <span><i class="fas fa-globe me-1"></i>{{ station.get_region_display }}</span>
+                {% if station.established_year %}<span><i class="fas fa-calendar me-1"></i>Est. {{ station.established_year }}</span>{% endif %}
+                <span style="color:var(--cyan);font-size:0.72rem">View details →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>window.PC_MAP_STATIONS = {{ map_data_json|safe }};</script>
+{% endblock %}

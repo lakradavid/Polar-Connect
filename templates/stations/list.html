@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Research Stations{% endblock %}
+{% block content %}
+<section class="pc-page-header"><div class="container"><h1><i class="fas fa-building me-2"></i>Polar Research Stations</h1></div></section>
+<section class="section-padding bg-light-grey"><div class="container">
+  <div class="row g-4">
+    {% for station in stations %}
+    <div class="col-lg-4 col-md-6">
+      <a href="{% url 'stations:detail' station.slug %}" class="text-decoration-none">
+        <div class="pc-card h-100">
+          {% if station.station_image %}<div class="pc-card-img-wrap"><img src="{{ station.station_image.url }}" alt="{{ station.name }}"></div>{% endif %}
+          <div class="pc-card-body">
+            <div class="d-flex gap-2 mb-2 flex-wrap">
+              <span class="pc-card-category">{{ station.get_region_display }}</span>
+              {% if station.is_demo_data %}<span class="badge-polar badge-demo">Demo</span>{% endif %}
+              {% if station.is_active %}<span class="badge-polar badge-approved">Active</span>{% endif %}
+            </div>
+            <h5 class="pc-card-title">{{ station.name }}</h5>
+            <p class="pc-card-text">{{ station.description|truncatewords:22 }}</p>
+            <div class="pc-card-meta">
+              <span><i class="fas fa-flag"></i> {{ station.country }}</span>
+              {% if station.established_year %}<span><i class="fas fa-calendar"></i> Est. {{ station.established_year }}</span>{% endif %}
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="pc-empty-state"><i class="fas fa-building"></i><h4>No stations on record yet</h4></div></div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-5">
+    <a href="{% url 'stations:map' %}" class="btn-polar-primary"><i class="fas fa-map-marked-alt me-1"></i>View Interactive Map</a>
+  </div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}{{ resource.title }}{% endblock %}
+{% block content %}
+<section class="pc-page-header">
+  <div class="container">
+    <div class="d-flex gap-2 mb-2 flex-wrap">
+      <span class="badge-polar badge-category">{{ resource.get_category_display }}</span>
+      <span class="badge-polar badge-new">{{ resource.get_resource_type_display }}</span>
+      {% if resource.is_demo_data %}<span class="badge-polar badge-demo"><i class="fas fa-info-circle me-1"></i>Demonstration Data</span>{% endif %}
+    </div>
+    <h1>{{ resource.title }}</h1>
+    <div class="d-flex gap-3 flex-wrap mt-2" style="color:rgba(255,255,255,0.65);font-size:0.85rem">
+      <span><i class="fas fa-user me-1"></i>{{ resource.author }}</span>
+      {% if resource.institution %}<span><i class="fas fa-building me-1"></i>{{ resource.institution }}</span>{% endif %}
+      {% if resource.publication_date %}<span><i class="fas fa-calendar me-1"></i>{{ resource.publication_date|date:"M d, Y" }}</span>{% endif %}
+    </div>
+  </div>
+</section>
+<section class="section-padding bg-light-grey">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="pc-card p-4 mb-4">
+          <h4 style="color:var(--deep-navy);margin-bottom:1rem">Abstract</h4>
+          <p style="line-height:1.8;color:var(--dark-grey)">{{ resource.abstract|default:"No abstract available." }}</p>
+        </div>
+        {% if resource.keyword_list %}
+        <div class="pc-card p-3 mb-4">
+          <h6 style="color:var(--deep-navy);margin-bottom:0.75rem"><i class="fas fa-tags me-2 text-arctic"></i>Keywords</h6>
+          <div class="d-flex gap-2 flex-wrap">
+            {% for kw in resource.keyword_list %}<span class="badge-polar badge-category">{{ kw }}</span>{% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        {% if related %}
+        <h5 style="color:var(--deep-navy);margin-bottom:1rem">Related Resources</h5>
+        {% for rel in related %}
+        <div class="pc-research-card mb-2">
+          <div class="pc-research-card-icon"><i class="fas fa-file-alt"></i></div>
+          <div><h6 class="pc-card-title" style="font-size:0.9rem"><a href="{% url 'repository:detail' rel.pk %}">{{ rel.title }}</a></h6>
+          <div class="pc-card-meta"><span><i class="fas fa-user"></i> {{ rel.author }}</span></div></div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+      <div class="col-lg-4">
+        <div class="pc-card p-4 mb-3">
+          <h6 style="color:var(--deep-navy);margin-bottom:1rem"><i class="fas fa-info-circle me-2 text-arctic"></i>Details</h6>
+          <table style="font-size:0.875rem;width:100%">
+            <tr><td style="color:var(--text-muted);padding:0.3rem 0;width:40%">Category</td><td><strong>{{ resource.get_category_display }}</strong></td></tr>
+            <tr><td style="color:var(--text-muted);padding:0.3rem 0">Type</td><td><strong>{{ resource.get_resource_type_display }}</strong></td></tr>
+            {% if resource.publication_date %}<tr><td style="color:var(--text-muted);padding:0.3rem 0">Published</td><td><strong>{{ resource.publication_date|date:"M d, Y" }}</strong></td></tr>{% endif %}
+            <tr><td style="color:var(--text-muted);padding:0.3rem 0">Downloads</td><td><strong>{{ resource.download_count }}</strong></td></tr>
+          </table>
+        </div>
+        <div class="pc-card p-3 d-flex flex-column gap-2">
+          {% if resource.uploaded_file %}
+          <a href="{{ resource.uploaded_file.url }}" class="btn-polar-primary justify-content-center" download><i class="fas fa-download me-1"></i>Download Document</a>
+          {% endif %}
+          {% if resource.external_url %}
+          <a href="{{ resource.external_url }}" target="_blank" rel="noopener" class="btn-polar-outline justify-content-center"><i class="fas fa-external-link-alt me-1"></i>External Link</a>
+          {% endif %}
+          <a href="{% url 'repository:list' %}" class="btn-polar-dark justify-content-center"><i class="fas fa-arrow-left me-1"></i>Back to Repository</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

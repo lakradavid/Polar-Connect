@@ -1,0 +1,68 @@
+# ── Python ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ─────────────────────────────────
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# ── Django ───────────────────────────────────────────────
+*.sqlite3
+db.sqlite3-journal
+staticfiles/
+local_settings.py
+
+# ── Media uploads (user-uploaded files) ─────────────────
+media/documents/*
+media/images/*
+media/videos/*
+media/gallery/*
+media/profiles/*
+media/research/*
+media/expeditions/*
+media/education/*
+media/news/*
+media/events/*
+media/stations/*
+media/repository/*
+
+# Keep the media directory itself
+!media/.gitkeep
+!media/documents/.gitkeep
+!media/images/.gitkeep
+!media/videos/.gitkeep
+
+# ── Environment / secrets ────────────────────────────────
+.env
+.env.*
+*.env
+secrets.py
+
+# ── IDE / OS ─────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Coverage / testing ───────────────────────────────────
+.coverage
+htmlcov/
+.pytest_cache/

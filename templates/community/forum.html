@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block title %}Community Forum{% endblock %}
+{% block content %}
+
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-comments me-2"></i>Community Forum</h1>
+    <p style="color:rgba(255,255,255,0.75)">Ask questions, discuss research and connect with polar scientists and enthusiasts</p>
+  </div>
+</section>
+
+<section class="section-padding bg-light-grey">
+  <div class="container">
+    <div class="row g-4">
+
+      <!-- Main discussions column -->
+      <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <h4 style="color:var(--deep-navy);margin:0">
+            <i class="fas fa-clock me-2 text-arctic"></i>Recent Discussions
+          </h4>
+          {% if user.is_authenticated %}
+          <a href="{% url 'community:new_discussion' %}" class="btn-polar-primary">
+            <i class="fas fa-plus me-1"></i> Start Discussion
+          </a>
+          {% else %}
+          <a href="{% url 'accounts:login' %}" class="btn-polar-primary">
+            <i class="fas fa-sign-in-alt me-1"></i> Login to Participate
+          </a>
+          {% endif %}
+        </div>
+
+        {% for disc in recent %}
+        <a href="{% url 'community:discussion' disc.pk %}" class="text-decoration-none">
+          <div class="pc-discussion-item mb-2">
+            <div class="d-flex gap-3 align-items-start">
+              <!-- Avatar -->
+              <div class="pc-scientist-avatar-placeholder flex-shrink-0"
+                   style="width:44px;height:44px;font-size:1.1rem;border-radius:50%">
+                {{ disc.author.get_display_name|first|upper }}
+              </div>
+              <div class="flex-grow-1 min-width-0">
+                <div class="d-flex gap-2 mb-1 flex-wrap align-items-center">
+                  {% if disc.is_question %}
+                  <span class="badge-polar badge-new" style="font-size:0.68rem">
+                    <i class="fas fa-question-circle me-1"></i>Question
+                  </span>
+                  {% endif %}
+                  <span class="badge-polar badge-category" style="font-size:0.68rem">{{ disc.forum.name }}</span>
+                  {% if disc.status == 'pinned' %}
+                  <span class="badge-polar badge-featured" style="font-size:0.68rem"><i class="fas fa-thumbtack me-1"></i>Pinned</span>
+                  {% endif %}
+                </div>
+                <h6 style="color:var(--deep-navy);margin:0.2rem 0 0.4rem;font-size:0.95rem;line-height:1.4">
+                  {{ disc.title }}
+                </h6>
+                <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:0.5rem;line-height:1.5">
+                  {{ disc.content|truncatewords:28 }}
+                </p>
+                <div class="pc-discussion-meta">
+                  <span><i class="fas fa-user" style="color:var(--arctic-blue)"></i> {{ disc.author.get_display_name }}</span>
+                  {% if disc.author.designation %}
+                  <span style="color:var(--arctic-blue);font-size:0.75rem">{{ disc.author.designation|truncatechars:30 }}</span>
+                  {% endif %}
+                  <span><i class="fas fa-comments" style="color:var(--arctic-blue)"></i> {{ disc.reply_count }} repl{{ disc.reply_count|pluralize:"y,ies" }}</span>
+                  <span><i class="fas fa-eye" style="color:var(--arctic-blue)"></i> {{ disc.view_count }}</span>
+                  <span><i class="fas fa-clock" style="color:var(--arctic-blue)"></i> {{ disc.created_at|timesince }} ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+        {% empty %}
+        <div class="pc-empty-state">
+          <i class="fas fa-comments"></i>
+          <h4>No discussions yet</h4>
+          <p>Be the first to start a conversation!</p>
+          {% if user.is_authenticated %}
+          <a href="{% url 'community:new_discussion' %}" class="btn-polar-primary mt-2">Start Discussion</a>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Sidebar: forums + stats -->
+      <div class="col-lg-4">
+
+        <!-- Forum list -->
+        <div class="pc-card p-3 mb-4">
+          <h5 style="color:var(--deep-navy);margin-bottom:1rem;font-size:1rem">
+            <i class="fas fa-th-list me-2 text-arctic"></i>Forums
+          </h5>
+          {% for forum in forums %}
+          <a href="{% url 'community:forum_detail' forum.slug %}" class="text-decoration-none">
+            <div class="d-flex gap-3 align-items-center p-2 rounded mb-1"
+                 style="transition:all 0.2s"
+                 onmouseover="this.style.background='var(--ice-blue)'"
+                 onmouseout="this.style.background='transparent'">
+              <div style="width:40px;height:40px;background:var(--ice-blue);border-radius:var(--radius-sm);
+                          display:flex;align-items:center;justify-content:center;color:var(--arctic-blue);flex-shrink:0">
+                <i class="{{ forum.icon|default:'fas fa-comments' }}"></i>
+              </div>
+              <div class="flex-grow-1">
+                <div style="font-weight:600;color:var(--deep-navy);font-size:0.875rem">{{ forum.name }}</div>
+                {% if forum.description %}
+                <div style="font-size:0.75rem;color:var(--text-muted)">{{ forum.description|truncatechars:55 }}</div>
+                {% endif %}
+              </div>
+              <div style="font-size:0.75rem;color:var(--arctic-blue);font-weight:600;white-space:nowrap">
+                {{ forum.post_count }} posts
+              </div>
+            </div>
+          </a>
+          {% empty %}
+          <p style="font-size:0.875rem;color:var(--text-muted)">Forums will appear here once created.</p>
+          {% endfor %}
+        </div>
+
+        <!-- Community guidelines -->
+        <div class="pc-card p-3">
+          <h6 style="color:var(--deep-navy);margin-bottom:0.75rem">
+            <i class="fas fa-shield-alt me-2 text-arctic"></i>Community Guidelines
+          </h6>
+          <ul style="font-size:0.82rem;color:var(--text-muted);padding-left:1.2rem;margin:0;line-height:1.9">
+            <li>Be respectful and constructive</li>
+            <li>Cite sources when sharing data or claims</li>
+            <li>Label speculation or opinion clearly</li>
+            <li>Keep discussions relevant to polar science</li>
+            <li>No spam, promotion or personal attacks</li>
+            <li>Respect copyright when sharing media</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Quiz Result{% endblock %}
+{% block content %}
+<section class="pc-page-header"><div class="container"><h1><i class="fas fa-trophy me-2"></i>Quiz Result</h1></div></section>
+<section class="section-padding bg-light-grey"><div class="container" style="max-width:600px">
+  <div class="pc-card p-5 text-center">
+    {% if attempt.passed %}
+    <div style="width:100px;height:100px;border-radius:50%;background:rgba(39,174,96,0.1);border:3px solid var(--success);display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 1.5rem">🎉</div>
+    <h2 style="color:var(--success)">Congratulations!</h2>
+    <p style="color:var(--text-muted)">You passed the quiz!</p>
+    {% else %}
+    <div style="width:100px;height:100px;border-radius:50%;background:rgba(243,156,18,0.1);border:3px solid var(--warning);display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 1.5rem">📚</div>
+    <h2 style="color:var(--warning)">Keep Learning</h2>
+    <p style="color:var(--text-muted)">Review the module and try again.</p>
+    {% endif %}
+    <div class="row g-3 my-4">
+      <div class="col-4">
+        <div class="pc-about-stat" style="background:var(--light-grey);border-color:var(--border-color)">
+          <div class="pc-about-stat-num" style="color:var(--deep-navy)">{{ attempt.score }}</div>
+          <div class="pc-about-stat-label" style="color:var(--text-muted)">Correct</div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="pc-about-stat" style="background:var(--light-grey);border-color:var(--border-color)">
+          <div class="pc-about-stat-num" style="color:var(--deep-navy)">{{ attempt.total_questions }}</div>
+          <div class="pc-about-stat-label" style="color:var(--text-muted)">Total</div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="pc-about-stat" style="background:var(--light-grey);border-color:var(--border-color)">
+          <div class="pc-about-stat-num" style="color:{% if attempt.passed %}var(--success){% else %}var(--warning){% endif %}">{{ attempt.percentage|floatformat:1 }}%</div>
+          <div class="pc-about-stat-label" style="color:var(--text-muted)">Score</div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="{% url 'education:quiz_take' attempt.quiz.pk %}" class="btn-polar-outline"><i class="fas fa-redo me-1"></i>Try Again</a>
+      <a href="{% url 'education:modules' %}" class="btn-polar-primary"><i class="fas fa-graduation-cap me-1"></i>More Modules</a>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

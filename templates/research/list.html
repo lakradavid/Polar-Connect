@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Research Publications{% endblock %}
+{% block content %}
+
+<section class="pc-page-header">
+  <div class="container">
+    <h1><i class="fas fa-flask me-2"></i>Research Publications</h1>
+    <p style="color:rgba(255,255,255,0.75)">Peer-reviewed and institutional research on polar science</p>
+  </div>
+</section>
+
+<section class="section-padding bg-light-grey">
+  <div class="container">
+
+    <!-- Filter bar -->
+    <div class="pc-filter-bar mb-4">
+      <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-4">
+          <div class="pc-search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" name="q" class="form-control" value="{{ q }}"
+                   placeholder="Search by title, author, keyword…">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select name="category" class="pc-filter-select w-100">
+            <option value="">All Categories</option>
+            {% for val, label in categories %}
+            <option value="{{ val }}" {% if category == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <input type="number" name="year" class="pc-filter-select w-100" value="{{ year }}"
+                 placeholder="Year" min="1980" max="2030">
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+          <button type="submit" class="btn-polar-primary flex-grow-1">
+            <i class="fas fa-search me-1"></i> Filter
+          </button>
+          {% if q or category or year %}<a href="{% url 'research:list' %}" class="btn-polar-dark" style="padding:0.5rem 0.75rem"><i class="fas fa-times"></i></a>{% endif %}
+          {% if user.is_authenticated %}
+          <a href="{% url 'research:upload' %}" class="btn-polar-cyan" style="padding:0.5rem 0.75rem" title="Upload"><i class="fas fa-upload"></i></a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+
+    <p class="text-muted mb-3" style="font-size:0.875rem">
+      <strong>{{ papers|length }}</strong> publication{{ papers|length|pluralize }} found
+    </p>
+
+    <div class="row g-4">
+      {% for paper in papers %}
+      <div class="col-lg-4 col-md-6">
+        <div class="pc-card h-100">
+          <!-- Category color band -->
+          <div style="height:5px;background:linear-gradient(to right,var(--arctic-blue),var(--cyan))"></div>
+          <div class="pc-card-body d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="pc-card-category">{{ paper.get_category_display }}</span>
+              {% if paper.is_featured %}
+              <span class="badge-polar badge-featured"><i class="fas fa-star"></i></span>
+              {% endif %}
+            </div>
+            <h5 class="pc-card-title" style="font-size:1rem">
+              <a href="{% url 'research:detail' paper.pk %}">{{ paper.title }}</a>
+            </h5>
+            <p class="pc-card-text flex-grow-1" style="font-size:0.82rem">
+              {{ paper.abstract|truncatewords:30 }}
+            </p>
+            <div class="pc-card-meta mt-auto pt-2 border-top">
+              <span><i class="fas fa-users"></i> {{ paper.authors|truncatechars:35 }}</span>
+              {% if paper.publication_year %}<span><i class="fas fa-calendar"></i> {{ paper.publication_year }}</span>{% endif %}
+              {% if paper.journal_name %}<span><i class="fas fa-book-open"></i> {{ paper.journal_name|truncatechars:25 }}</span>{% endif %}
+            </div>
+            <a href="{% url 'research:detail' paper.pk %}" class="btn-polar-outline mt-3 justify-content-center" style="font-size:0.8rem;padding:0.4rem 1rem">
+              View Abstract <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="pc-empty-state">
+          <i class="fas fa-flask"></i>
+          <h4>No research papers found</h4>
+          <p>Try different search terms or clear the filters.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}
